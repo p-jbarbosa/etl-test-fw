@@ -438,11 +438,18 @@
     <notepad>
       <note>Purpose - to compare the main table with the correct table
 
-REMEMBER TO DELETE THE INPUT PARAMETERS</note>
+Variables used (from entity description)
+
+* V_TABLE_TO_COMPARE
+* V_MAIN_TABLE
+
+MDI
+
+* columns to compare over the merge diff step</note>
       <xloc>32</xloc>
       <yloc>32</yloc>
       <width>406</width>
-      <heigth>61</heigth>
+      <heigth>180</heigth>
       <fontname>Ubuntu</fontname>
       <fontsize>11</fontsize>
       <fontbold>N</fontbold>
@@ -537,6 +544,31 @@ REMEMBER TO DELETE THE INPUT PARAMETERS</note>
     </hop>
   </order>
   <step>
+    <name>d-output</name>
+    <type>Dummy</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1216</xloc>
+      <yloc>192</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>mergeDiff-object_to_correct</name>
     <type>MergeRows</type>
     <description/>
@@ -565,8 +597,8 @@ REMEMBER TO DELETE THE INPUT PARAMETERS</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>416</xloc>
-      <yloc>272</yloc>
+      <xloc>816</xloc>
+      <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -596,8 +628,8 @@ REMEMBER TO DELETE THE INPUT PARAMETERS</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>640</xloc>
-      <yloc>272</yloc>
+      <xloc>1040</xloc>
+      <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -630,8 +662,8 @@ order by LegalHold;</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>416</xloc>
-      <yloc>128</yloc>
+      <xloc>816</xloc>
+      <yloc>48</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -664,33 +696,8 @@ order by LegalHold;</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>144</xloc>
-      <yloc>272</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>d-output</name>
-    <type>Dummy</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>816</xloc>
-      <yloc>272</yloc>
+      <xloc>544</xloc>
+      <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -702,10 +709,6 @@ order by LegalHold;</sql>
   <attributes>
     <group>
       <name>explorerState</name>
-      <attribute>
-        <key>d-output</key>
-        <value/>
-      </attribute>
     </group>
   </attributes>
 </transformation>

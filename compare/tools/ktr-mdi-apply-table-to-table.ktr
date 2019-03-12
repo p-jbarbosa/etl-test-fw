@@ -587,7 +587,7 @@
     <specification_method>filename</specification_method>
     <trans_object_id/>
     <trans_name/>
-    <filename>${P_ETL_TEST_FRAMEWORK_FOLDER}/compare/tools/ktr-mdi-template-table-to-table.ktr</filename>
+    <filename>${ETL_TEST_FRAMEWORK_DIR}/compare/tools/ktr-mdi-template-table-to-table.ktr</filename>
     <directory_path/>
     <source_step>d-output</source_step>
     <source_output_fields>

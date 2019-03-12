@@ -501,7 +501,7 @@ Parameters
     <defaultPathLeafToNull>Y</defaultPathLeafToNull>
     <rownum_field/>
     <file>
-      <name>${P_TESTS_FOLDER}/entities/${P_ENTITY}/definition.json</name>
+      <name>${ETL_PROJECT_DIR}/entities/${P_ENTITY}/definition.json</name>
       <filemask/>
       <exclude_filemask/>
       <file_required>N</file_required>

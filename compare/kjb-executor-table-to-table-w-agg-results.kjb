@@ -400,7 +400,7 @@ V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
       <attributes/>
       <specification_method>filename</specification_method>
       <trans_object_id/>
-      <filename>${P_ETL_TEST_FRAMEWORK_FOLDER}/${P_TEST_OPERATION}/tools/ktr-mdi-apply-table-to-table.ktr</filename>
+      <filename>${ETL_TEST_FRAMEWORK_DIR}/${P_TEST_OPERATION}/tools/ktr-mdi-apply-table-to-table.ktr</filename>
       <transname/>
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -453,7 +453,7 @@ V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
       <attributes/>
       <specification_method>filename</specification_method>
       <trans_object_id/>
-      <filename>${P_ETL_TEST_FRAMEWORK_FOLDER}/helpers/ktr-compile-comparison.ktr</filename>
+      <filename>${ETL_TEST_FRAMEWORK_DIR}/helpers/ktr-compile-comparison.ktr</filename>
       <transname/>
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>

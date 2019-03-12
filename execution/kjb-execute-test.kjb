@@ -465,7 +465,7 @@ V_ERROR_MSG: ${V_ERROR_MSG}</logmessage>
       <attributes/>
       <specification_method>filename</specification_method>
       <trans_object_id/>
-      <filename>${P_ETL_TEST_FRAMEWORK_FOLDER}/helpers/ktr-get-entity-data.ktr</filename>
+      <filename>${ETL_TEST_FRAMEWORK_DIR}/helpers/ktr-get-entity-data.ktr</filename>
       <transname/>
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -539,7 +539,7 @@ V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
       <attributes/>
       <specification_method>filename</specification_method>
       <job_object_id/>
-      <filename>${P_ETL_TEST_FRAMEWORK_FOLDER}/${P_TEST_OPERATION}/kjb-executor-table-to-table-w-agg-results.kjb</filename>
+      <filename>${ETL_TEST_FRAMEWORK_DIR}/${P_TEST_OPERATION}/kjb-executor-table-to-table-w-agg-results.kjb</filename>
       <jobname/>
       <directory/>
       <arg_from_previous>N</arg_from_previous>
@@ -723,6 +723,40 @@ to make final decision
       <backgroundcolorred>173</backgroundcolorred>
       <backgroundcolorgreen>216</backgroundcolorgreen>
       <backgroundcolorblue>230</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
+    <notepad>
+      <note>Could be similar to what is designed 
+on the ETL framework.
+
+A Generic Executor that also creates 
+environment and is responsible
+to put the logs on the correct place.
+
+                                                                                               
+
+
+
+
+
+</note>
+      <xloc>528</xloc>
+      <yloc>208</yloc>
+      <width>295</width>
+      <heigth>248</heigth>
+      <fontname>Ubuntu</fontname>
+      <fontsize>11</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>237</backgroundcolorred>
+      <backgroundcolorgreen>211</backgroundcolorgreen>
+      <backgroundcolorblue>164</backgroundcolorblue>
       <bordercolorred>100</bordercolorred>
       <bordercolorgreen>100</bordercolorgreen>
       <bordercolorblue>100</bordercolorblue>
