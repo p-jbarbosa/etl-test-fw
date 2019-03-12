@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.1 r1853635">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Remote To Certify" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="tmp-folder" elementType="Argument">
+            <stringProp name="Argument.name">tmp-folder</stringProp>
+            <stringProp name="Argument.value">/tmp</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="host" elementType="Argument">
+            <stringProp name="Argument.name">host</stringProp>
+            <stringProp name="Argument.value">${__P(Host)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="port" elementType="Argument">
+            <stringProp name="Argument.name">port</stringProp>
+            <stringProp name="Argument.value">${__P(Port)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="user" elementType="Argument">
+            <stringProp name="Argument.name">user</stringProp>
+            <stringProp name="Argument.value">malskat</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="password" elementType="Argument">
+            <stringProp name="Argument.name">password</stringProp>
+            <stringProp name="Argument.value">charlie69</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="connection-time-out" elementType="Argument">
+            <stringProp name="Argument.name">connection-time-out</stringProp>
+            <stringProp name="Argument.value">5000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="remote-project-location" elementType="Argument">
+            <stringProp name="Argument.name">remote-project-location</stringProp>
+            <stringProp name="Argument.value">${__P(ProjectLocation)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="remote-kitchen-location" elementType="Argument">
+            <stringProp name="Argument.name">remote-kitchen-location</stringProp>
+            <stringProp name="Argument.value">${__P(ProjectLocation)}/configurations/config-pdi-${__P(Environment)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="test-entity" elementType="Argument">
+            <stringProp name="Argument.name">test-entity</stringProp>
+            <stringProp name="Argument.value">${__P(TestEntity)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="remote-test-configurations-location" elementType="Argument">
+            <stringProp name="Argument.name">remote-test-configurations-location</stringProp>
+            <stringProp name="Argument.value">${__P(ProjectLocation)}/tests/test-configurations</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="test-configuration" elementType="Argument">
+            <stringProp name="Argument.name">test-configuration</stringProp>
+            <stringProp name="Argument.value">${__P(TestConfiguration)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="View Results in Table" enabled="false">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </SetupThreadGroup>
+      <hashTree>
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="JSR223 Sampler-Validate input Properties" enabled="true">
+          <stringProp name="cacheKey">true</stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="script">import org.apache.jmeter.functions.TestPlanName
+
+def testPlanName = new TestPlanName().execute().minus(&quot;.jmx&quot;)
+
+log.info &apos;* START TEST PLAN &apos; + testPlanName
+log.info &apos;** Property Value used for Test Plan:&apos;
+log.info &apos;*** TestEntity &quot;&apos; + props.get(&quot;TestEntity&quot;) + &apos;&quot;&apos;
+log.info &apos;*** TestConfiguration &quot;&apos; + props.get(&quot;TestConfiguration&quot;) + &apos;&quot;&apos;
+log.info &apos;*** ProjectLocation &quot;&apos; + props.get(&quot;ProjectLocation&quot;) + &apos;&quot;&apos;
+log.info &apos;*** Environment &quot;&apos; + props.get(&quot;Environment&quot;) + &apos;&quot;&apos;
+
+if (props.get(&quot;TestEntity&quot;) == null || props.get(&quot;TestConfiguration&quot;) == null || props.get(&quot;ProjectLocation&quot;) == null | props.get(&quot;Environment&quot;) == null) {
+	log.error &apos;Incorrect set of properties. We need TestEntity, ProjectLocation and TestConfiguration input values to procced!&apos;
+	SampleResult.setSuccessful(false);
+	SampleResult.setResponseMessage(&apos;Incorrect set of properties. We need TestEntity, ProjectLocation and TestConfiguration input values to procced!&apos;);
+	SampleResult.setResponseData(&apos;Incorrect set of properties. We need TestEntity, ProjectLocation and TestConfiguration input values to procced!&apos;);
+	IsSuccess=false;
+	SampleResult.setStopTestNow(true);
+}</stringProp>
+          <stringProp name="scriptLanguage">groovy</stringProp>
+        </JSR223Sampler>
+        <hashTree/>
+        <org.apache.jmeter.protocol.ssh.sampler.SSHSFTPSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSFTPSampler" testname="SSH SFTP - get test configuration .csv from remote file at ${remote-test-configurations-location}/${test-entity}/${test-configuration}.csv" enabled="true">
+          <stringProp name="action">get</stringProp>
+          <stringProp name="connectionTimeout">${connection-time-out}</stringProp>
+          <stringProp name="destination">${tmp-folder}</stringProp>
+          <stringProp name="hostname">${host}</stringProp>
+          <stringProp name="passphrase"></stringProp>
+          <stringProp name="password">${password}</stringProp>
+          <stringProp name="port">${port}</stringProp>
+          <boolProp name="printFile">false</boolProp>
+          <stringProp name="source">${remote-test-configurations-location}/${test-entity}/${test-configuration}.csv</stringProp>
+          <stringProp name="sshkeyfile"></stringProp>
+          <stringProp name="username">${user}</stringProp>
+        </org.apache.jmeter.protocol.ssh.sampler.SSHSFTPSampler>
+        <hashTree/>
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="JSR223 Sampler - validate .csv existance and number of lines" enabled="true">
+          <stringProp name="scriptLanguage">groovy</stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="cacheKey">true</stringProp>
+          <stringProp name="script">import org.apache.jmeter.services.FileServer
+
+log.info &apos;* VALIDATE .csv TEST CONFIGURATION &apos;
+
+def testConfigurationDirectory = vars.get(&quot;tmp-folder&quot;)
+def testConfigurationFile = vars.get(&quot;test-configuration&quot;) + &apos;.csv&apos;
+
+
+log.info &apos;*** Looking into Test Configuration at &quot;&apos; + testConfigurationDirectory + &apos;/&apos; + testConfigurationFile + &apos;&quot;&apos;
+
+if (new File(testConfigurationDirectory + &apos;/&apos; + testConfigurationFile).exists() != true){
+	log.error(&quot;__________________ Script Error: .csv Test Configuration not fount at  : &quot; + kitchenLocation)
+	SampleResult.setSuccessful(false);
+	SampleResult.setResponseMessage(&quot;Failed to find .csv Test Configuration&quot;);
+	SampleResult.setResponseData(&quot;.csv Test Configuration missing  : &quot; + testConfigurationDirectory + &apos;/&apos; + testConfigurationFile,&quot;UTF-8&quot;);
+	IsSuccess=false;
+	SampleResult.setStopTestNow(true);
+} else {
+		
+	// counting Test Configuration File Lines to use as variable for the csvDataConfig
+	def countLines = countCsvLines(testConfigurationDirectory, testConfigurationFile)
+	log.info &apos;*** Test Configuration number of lines (tests to execute ) - &apos; + countLines.toString()
+	props.put(&quot;LoopCount&quot;, countLines.toString()) // Set jmeter property Total number of tests
+}
+
+
+// HELPERS
+
+def countCsvLines(String directory, String file) {
+    try {
+        new File(directory, file).readLines().size() - 1 // -1 minus header
+    } catch (e) {
+        log.error(&quot;__________________ Script Error: There are no lines on : &quot; + directory + &apos;/&apos; + file)
+        return &quot;&quot;
+    }
+}
+</stringProp>
+        </JSR223Sampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="TG-Execution for Entity ${test-entity} and test ${test-configuration}" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">${__P(LoopCount)}</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="csvDataConfig-configurationExecution" enabled="true">
+          <stringProp name="delimiter">;</stringProp>
+          <stringProp name="fileEncoding">UTF-8</stringProp>
+          <stringProp name="filename">/tmp/${test-configuration}.csv</stringProp>
+          <boolProp name="ignoreFirstLine">false</boolProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">true</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+          <boolProp name="stopThread">false</boolProp>
+          <stringProp name="variableNames"></stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <CriticalSectionController guiclass="CriticalSectionControllerGui" testclass="CriticalSectionController" testname="Critical Section Controller" enabled="true">
+          <stringProp name="TestPlan.comments">To make sure we only execute this by only one thread.</stringProp>
+          <stringProp name="CriticalSectionController.lockName">global_lock</stringProp>
+        </CriticalSectionController>
+        <hashTree>
+          <org.apache.jmeter.protocol.ssh.sampler.SSHCommandSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHCommandSampler" testname="SSH Command - call ${objectToExecute} at ${objectContainer}" enabled="true">
+            <stringProp name="command">${remote-kitchen-location}/kitchen.sh -file=${remote-project-location}/${objectContainer}/${objectToExecute} ${objectParams}</stringProp>
+            <stringProp name="connectionTimeout">${connection-time-out}</stringProp>
+            <stringProp name="hostname">${host}</stringProp>
+            <stringProp name="passphrase"></stringProp>
+            <stringProp name="password">${password}</stringProp>
+            <stringProp name="port">${port}</stringProp>
+            <boolProp name="printStdErr">true</boolProp>
+            <stringProp name="sshkeyfile"></stringProp>
+            <boolProp name="useReturnCode">true</boolProp>
+            <stringProp name="username">${user}</stringProp>
+          </org.apache.jmeter.protocol.ssh.sampler.SSHCommandSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="48">0</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="tearDown Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </PostThreadGroup>
+      <hashTree>
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="JSR223 Sampler-removing .csv test configuration from local file system" enabled="true">
+          <stringProp name="scriptLanguage">groovy</stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="cacheKey">true</stringProp>
+          <stringProp name="script">
+
+def testConfigurationDirectory = vars.get(&quot;tmp-folder&quot;)
+def testConfigurationFile = vars.get(&quot;test-configuration&quot;) + &apos;.csv&apos;
+
+log.info &apos;* TEAR DOWN - removing .csv test configuration from local file system  at &quot;&apos; + testConfigurationDirectory + &apos;/&apos; + testConfigurationFile + &apos;&quot;&apos;
+
+File file = new File(testConfigurationDirectory + &apos;/&apos; + testConfigurationFile);
+
+if (file.exists()) {
+	file.delete(); 
+}</stringProp>
+        </JSR223Sampler>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

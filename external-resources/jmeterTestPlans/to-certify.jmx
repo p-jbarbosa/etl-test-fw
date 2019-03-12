@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.0 r1840935">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="ETLTestLegalHold" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">true</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="project-location" elementType="Argument">
+            <stringProp name="Argument.name">project-location</stringProp>
+            <stringProp name="Argument.value">${__P(ProjectLocation)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="kitchen-location" elementType="Argument">
+            <stringProp name="Argument.name">kitchen-location</stringProp>
+            <stringProp name="Argument.value">${__P(ProjectLocation)}/configurations/config-pdi-${__P(Environment)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="test-entity" elementType="Argument">
+            <stringProp name="Argument.name">test-entity</stringProp>
+            <stringProp name="Argument.value">${__P(TestEntity)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="test-results-location" elementType="Argument">
+            <stringProp name="Argument.name">test-results-location</stringProp>
+            <stringProp name="Argument.value">${__P(ProjectLocation)}/tests/test-results</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="test-configurations-location" elementType="Argument">
+            <stringProp name="Argument.name">test-configurations-location</stringProp>
+            <stringProp name="Argument.value">${__P(ProjectLocation)}/tests/test-configurations</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="test-configuration" elementType="Argument">
+            <stringProp name="Argument.name">test-configuration</stringProp>
+            <stringProp name="Argument.value">${__P(TestConfiguration)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUpTG-validateProperties" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">stoptest</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <stringProp name="TestPlan.comments">Used to validate if the necessary  test plan input properties are in place</stringProp>
+      </SetupThreadGroup>
+      <hashTree>
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="setUpPlan Validate Properties" enabled="true">
+          <stringProp name="cacheKey">true</stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="script">import org.apache.jmeter.services.FileServer
+import org.apache.jmeter.functions.TestPlanName
+
+def testPlanName = new TestPlanName().execute().minus(&quot;.jmx&quot;)
+
+log.info &apos;* START TEST PLAN &apos; + testPlanName
+log.info &apos;** Property Value used for Test Plan:&apos;
+log.info &apos;*** TestEntity &quot;&apos; + props.get(&quot;TestEntity&quot;) + &apos;&quot;&apos;
+log.info &apos;*** TestConfiguration &quot;&apos; + props.get(&quot;TestConfiguration&quot;) + &apos;&quot;&apos;
+log.info &apos;*** ProjectLocation &quot;&apos; + props.get(&quot;ProjectLocation&quot;) + &apos;&quot;&apos;
+log.info &apos;*** Environment &quot;&apos; + props.get(&quot;Environment&quot;) + &apos;&quot;&apos;
+	
+
+if (props.get(&quot;TestEntity&quot;) == null || props.get(&quot;TestConfiguration&quot;) == null || props.get(&quot;ProjectLocation&quot;) == null | props.get(&quot;Environment&quot;) == null) {
+
+	log.error &apos;Incorrect set of properties. We need TestEntity, ProjectLocation and TestConfiguration input values to procced!&apos;
+	SampleResult.setSuccessful(false);
+	SampleResult.setResponseMessage(&apos;Incorrect set of properties. We need TestEntity, ProjectLocation and TestConfiguration input values to procced!&apos;);
+	SampleResult.setResponseData(&apos;Incorrect set of properties. We need TestEntity, ProjectLocation and TestConfiguration input values to procced!&apos;);
+	IsSuccess=false;
+	SampleResult.setStopTestNow(true);
+	
+} else {
+	
+	log.info &apos;*** PROPERTIES ARE CORRECT&apos;
+	log.info &apos;** START TESTING IMPORTANT FOLDER AND FILE LOCATIONS&apos;
+
+	//CHECK KITCHEN EXISTENCE
+
+	def kitchenLocation = vars.get(&quot;kitchen-location&quot;)
+	log.info &apos;*** Checking Kitchen location at &apos; + kitchenLocation + &apos;/kitchen.sh&apos;
+	
+	if(new File(vars.get(&quot;kitchen-location&quot;) + &apos;/kitchen.sh&apos;).exists() != true){
+		log.error(&quot;__________________ Script Error: Kitchen not fount on  : &quot; + kitchenLocation)
+		SampleResult.setSuccessful(false);
+		SampleResult.setResponseMessage(&quot;Failed to find kitchen.sh file&quot;);
+		SampleResult.setResponseData(&quot;Kitchen not fount at  : &quot; + kitchenLocation,&quot;UTF-8&quot;);
+		IsSuccess=false;
+		SampleResult.setStopTestNow(true);
+	}
+
+	//CHECKING .csv TEST CONFIGURATION
+
+	def testConfigurationDirectory = vars.get(&quot;test-configurations-location&quot;) + &apos;/&apos; + vars.get(&quot;test-entity&quot;)
+	def testConfigurationFile = vars.get(&quot;test-configuration&quot;) + &apos;.csv&apos;
+	
+	
+	log.info &apos;*** Looking into Test Configuration at &quot;&apos; + testConfigurationDirectory + &apos;/&apos; + testConfigurationFile + &apos;&quot;&apos;
+
+	if (new File(testConfigurationDirectory + &apos;/&apos; + testConfigurationFile).exists() != true){
+		log.error(&quot;__________________ Script Error: .csv Test Configuration not fount at  : &quot; + kitchenLocation)
+		SampleResult.setSuccessful(false);
+		SampleResult.setResponseMessage(&quot;Failed to find .csv Test Configuration&quot;);
+		SampleResult.setResponseData(&quot;.csv Test Configuration missing  : &quot; + testConfigurationDirectory + &apos;/&apos; + testConfigurationFile,&quot;UTF-8&quot;);
+		IsSuccess=false;
+		SampleResult.setStopTestNow(true);
+	} else {
+   		
+		// counting Test Configuration File Lines to use as variable for the csvDataConfig
+		def countLines = countCsvLines(testConfigurationDirectory, testConfigurationFile)
+		log.info &apos;*** Test Configuration number of lines (tests to execute ) - &apos; + countLines.toString()
+		props.put(&quot;LoopCount&quot;, countLines.toString()) // Set jmeter property Total number of tests
+	}
+
+}
+
+// HELPERS
+
+def countCsvLines(String directory, String file) {
+    try {
+        new File(directory, file).readLines().size() - 1 // -1 minus header
+    } catch (e) {
+        log.error(&quot;__________________ Script Error: There are no lines on : &quot; + directory + &apos;/&apos; + file)
+        return &quot;&quot;
+    }
+}
+</stringProp>
+          <stringProp name="scriptLanguage">groovy</stringProp>
+          <stringProp name="TestPlan.comments">It will validate the jmeter testPlan input parameters and the if the .csv has content or not.</stringProp>
+        </JSR223Sampler>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="TGExecutionEntity ${test-entity} and test ${test-configuration}" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">stopthread</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">${__P(LoopCount)}</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="csvDataConfig Load Configuration Execution" enabled="true">
+          <stringProp name="delimiter">;</stringProp>
+          <stringProp name="fileEncoding">UTF-8</stringProp>
+          <stringProp name="filename">${test-configurations-location}/${test-entity}/${test-configuration}.csv</stringProp>
+          <boolProp name="ignoreFirstLine">false</boolProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">false</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+          <boolProp name="stopThread">true</boolProp>
+          <stringProp name="variableNames"></stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <CriticalSectionController guiclass="CriticalSectionControllerGui" testclass="CriticalSectionController" testname="Critical Section Controller" enabled="true">
+          <stringProp name="CriticalSectionController.lockName">global_lock</stringProp>
+        </CriticalSectionController>
+        <hashTree>
+          <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="OSSampler Call KJB to Test ${objectToExecute}" enabled="true">
+            <boolProp name="SystemSampler.checkReturnCode">false</boolProp>
+            <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
+            <stringProp name="SystemSampler.command">/bin/bash</stringProp>
+            <elementProp name="SystemSampler.arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="Argument">
+                  <stringProp name="Argument.name"></stringProp>
+                  <stringProp name="Argument.value">-c</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Argument">
+                  <stringProp name="Argument.name"></stringProp>
+                  <stringProp name="Argument.value">${kitchen-location}/kitchen.sh -file=${project-location}/${objectContainer}/${objectToExecute} ${objectParams}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <elementProp name="SystemSampler.environment" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="SystemSampler.directory"></stringProp>
+          </SystemSampler>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Code Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1178873028">${expectedStatus}</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+      <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="ViewResultsTable" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <sampleCount>true</sampleCount>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename">${test-results-location}/${test-entity}/result-${test-configuration}-${__time(YYYYMMddHHmmss,curTime)}.csv</stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
