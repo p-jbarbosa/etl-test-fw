@@ -25,12 +25,12 @@
           </elementProp>
           <elementProp name="user" elementType="Argument">
             <stringProp name="Argument.name">user</stringProp>
-            <stringProp name="Argument.value">malskat</stringProp>
+            <stringProp name="Argument.value">${__P(User)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="password" elementType="Argument">
             <stringProp name="Argument.name">password</stringProp>
-            <stringProp name="Argument.value">charlie69</stringProp>
+            <stringProp name="Argument.value">${__P(Password)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="connection-time-out" elementType="Argument">
@@ -38,24 +38,24 @@
             <stringProp name="Argument.value">5000</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="remote-project-location" elementType="Argument">
-            <stringProp name="Argument.name">remote-project-location</stringProp>
-            <stringProp name="Argument.value">${__P(ProjectLocation)}</stringProp>
+          <elementProp name="remote-base-dir" elementType="Argument">
+            <stringProp name="Argument.name">remote-base-dir</stringProp>
+            <stringProp name="Argument.value">${__P(BaseDir)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="remote-kitchen-location" elementType="Argument">
-            <stringProp name="Argument.name">remote-kitchen-location</stringProp>
-            <stringProp name="Argument.value">${__P(ProjectLocation)}/configurations/config-pdi-${__P(Environment)}</stringProp>
+          <elementProp name="remote-kitchen-dir" elementType="Argument">
+            <stringProp name="Argument.name">remote-kitchen-dir</stringProp>
+            <stringProp name="Argument.value">${__P(BaseDir)}/${__P(ProjectConfigurationsDir)}/config-pdi-${__P(Environment)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="test-entity" elementType="Argument">
             <stringProp name="Argument.name">test-entity</stringProp>
-            <stringProp name="Argument.value">${__P(TestEntity)}</stringProp>
+            <stringProp name="Argument.value">${__P(Entity)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="remote-test-configurations-location" elementType="Argument">
-            <stringProp name="Argument.name">remote-test-configurations-location</stringProp>
-            <stringProp name="Argument.value">${__P(ProjectLocation)}/tests/test-configurations</stringProp>
+          <elementProp name="remote-test-configurations-dir" elementType="Argument">
+            <stringProp name="Argument.name">remote-test-configurations-dir</stringProp>
+            <stringProp name="Argument.value">${__P(BaseDir)}/${__P(ProjectName)}/test-configurations</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="test-configuration" elementType="Argument">
@@ -68,7 +68,7 @@
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
@@ -105,7 +105,7 @@
         <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
-      <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="View Results in Table" enabled="false">
+      <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="View Results in Table" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
@@ -165,23 +165,27 @@ def testPlanName = new TestPlanName().execute().minus(&quot;.jmx&quot;)
 
 log.info &apos;* START TEST PLAN &apos; + testPlanName
 log.info &apos;** Property Value used for Test Plan:&apos;
-log.info &apos;*** TestEntity &quot;&apos; + props.get(&quot;TestEntity&quot;) + &apos;&quot;&apos;
+log.info &apos;*** Entity &quot;&apos; + props.get(&quot;Entity&quot;) + &apos;&quot;&apos;
 log.info &apos;*** TestConfiguration &quot;&apos; + props.get(&quot;TestConfiguration&quot;) + &apos;&quot;&apos;
-log.info &apos;*** ProjectLocation &quot;&apos; + props.get(&quot;ProjectLocation&quot;) + &apos;&quot;&apos;
+log.info &apos;*** Base Dir &quot;&apos; + props.get(&quot;BaseDir&quot;) + &apos;&quot;&apos;
+log.info &apos;*** Project Name &quot;&apos; + props.get(&quot;ProjectName&quot;) + &apos;&quot;&apos;
+log.info &apos;*** Project Configurations Dir &quot;&apos; + props.get(&quot;ProjectConfigurationsDir&quot;) + &apos;&quot;&apos;
 log.info &apos;*** Environment &quot;&apos; + props.get(&quot;Environment&quot;) + &apos;&quot;&apos;
 
-if (props.get(&quot;TestEntity&quot;) == null || props.get(&quot;TestConfiguration&quot;) == null || props.get(&quot;ProjectLocation&quot;) == null | props.get(&quot;Environment&quot;) == null) {
-	log.error &apos;Incorrect set of properties. We need TestEntity, ProjectLocation and TestConfiguration input values to procced!&apos;
+if (props.get(&quot;Entity&quot;) == null || props.get(&quot;TestConfiguration&quot;) == null || props.get(&quot;BaseDir&quot;) == null || props.get(&quot;ProjectName&quot;) == null || 
+		props.get(&quot;ProjectConfigurationsDir&quot;) == null || props.get(&quot;Environment&quot;) == null) {
+
+	log.error &apos;Incorrect set of properties. We need Entity, TestConfiguration, BaseDir, ProjectName,  ProjectConfigurationsDir and  Environment input values to procced!&apos;
 	SampleResult.setSuccessful(false);
-	SampleResult.setResponseMessage(&apos;Incorrect set of properties. We need TestEntity, ProjectLocation and TestConfiguration input values to procced!&apos;);
-	SampleResult.setResponseData(&apos;Incorrect set of properties. We need TestEntity, ProjectLocation and TestConfiguration input values to procced!&apos;);
+	SampleResult.setResponseMessage(&apos;Incorrect set of properties. We need Entity, TestConfiguration, BaseDir, ProjectName,  ProjectConfigurationsDir and  Environment input values to procced!&apos;);
+	SampleResult.setResponseData(&apos;Incorrect set of properties. We need Entity, TestConfiguration, BaseDir, ProjectName,  ProjectConfigurationsDir and  Environment input values to procced!&apos;);
 	IsSuccess=false;
 	SampleResult.setStopTestNow(true);
 }</stringProp>
           <stringProp name="scriptLanguage">groovy</stringProp>
         </JSR223Sampler>
         <hashTree/>
-        <org.apache.jmeter.protocol.ssh.sampler.SSHSFTPSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSFTPSampler" testname="SSH SFTP - get test configuration .csv from remote file at ${remote-test-configurations-location}/${test-entity}/${test-configuration}.csv" enabled="true">
+        <org.apache.jmeter.protocol.ssh.sampler.SSHSFTPSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHSFTPSampler" testname="SSH SFTP - get test configuration .csv from remote file at ${remote-test-configurations-dir}/${test-entity}/${test-configuration}.csv" enabled="true">
           <stringProp name="action">get</stringProp>
           <stringProp name="connectionTimeout">${connection-time-out}</stringProp>
           <stringProp name="destination">${tmp-folder}</stringProp>
@@ -190,7 +194,7 @@ if (props.get(&quot;TestEntity&quot;) == null || props.get(&quot;TestConfigurati
           <stringProp name="password">${password}</stringProp>
           <stringProp name="port">${port}</stringProp>
           <boolProp name="printFile">false</boolProp>
-          <stringProp name="source">${remote-test-configurations-location}/${test-entity}/${test-configuration}.csv</stringProp>
+          <stringProp name="source">${remote-test-configurations-dir}/${test-entity}/${test-configuration}.csv</stringProp>
           <stringProp name="sshkeyfile"></stringProp>
           <stringProp name="username">${user}</stringProp>
         </org.apache.jmeter.protocol.ssh.sampler.SSHSFTPSampler>
@@ -204,23 +208,22 @@ if (props.get(&quot;TestEntity&quot;) == null || props.get(&quot;TestConfigurati
 
 log.info &apos;* VALIDATE .csv TEST CONFIGURATION &apos;
 
-def testConfigurationDirectory = vars.get(&quot;tmp-folder&quot;)
-def testConfigurationFile = vars.get(&quot;test-configuration&quot;) + &apos;.csv&apos;
+def testConfigurationFile = vars.get(&quot;tmp-folder&quot;) + &apos;/&apos; + vars.get(&quot;test-configuration&quot;) + &apos;.csv&apos;
 
 
-log.info &apos;*** Looking into Test Configuration at &quot;&apos; + testConfigurationDirectory + &apos;/&apos; + testConfigurationFile + &apos;&quot;&apos;
+log.info &apos;*** Looking into Test Configuration at &quot;&apos; + testConfigurationFile + &apos;&quot;&apos;
 
-if (new File(testConfigurationDirectory + &apos;/&apos; + testConfigurationFile).exists() != true){
-	log.error(&quot;__________________ Script Error: .csv Test Configuration not fount at  : &quot; + kitchenLocation)
+if (new File(testConfigurationFile).exists() != true){
+	log.error(&quot;__________________ Script Error: .csv Test Configuration not fount at  : &quot; + testConfigurationFile)
 	SampleResult.setSuccessful(false);
 	SampleResult.setResponseMessage(&quot;Failed to find .csv Test Configuration&quot;);
-	SampleResult.setResponseData(&quot;.csv Test Configuration missing  : &quot; + testConfigurationDirectory + &apos;/&apos; + testConfigurationFile,&quot;UTF-8&quot;);
+	SampleResult.setResponseData(&quot;.csv Test Configuration missing  : &quot; + testConfigurationFile,&quot;UTF-8&quot;);
 	IsSuccess=false;
 	SampleResult.setStopTestNow(true);
 } else {
 		
 	// counting Test Configuration File Lines to use as variable for the csvDataConfig
-	def countLines = countCsvLines(testConfigurationDirectory, testConfigurationFile)
+	def countLines = countCsvLines(testConfigurationFile)
 	log.info &apos;*** Test Configuration number of lines (tests to execute ) - &apos; + countLines.toString()
 	props.put(&quot;LoopCount&quot;, countLines.toString()) // Set jmeter property Total number of tests
 }
@@ -228,9 +231,9 @@ if (new File(testConfigurationDirectory + &apos;/&apos; + testConfigurationFile)
 
 // HELPERS
 
-def countCsvLines(String directory, String file) {
+def countCsvLines(String file) {
     try {
-        new File(directory, file).readLines().size() - 1 // -1 minus header
+        new File(file).readLines().size() - 1 // -1 minus header
     } catch (e) {
         log.error(&quot;__________________ Script Error: There are no lines on : &quot; + directory + &apos;/&apos; + file)
         return &quot;&quot;
@@ -256,7 +259,7 @@ def countCsvLines(String directory, String file) {
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="csvDataConfig-configurationExecution" enabled="true">
           <stringProp name="delimiter">;</stringProp>
           <stringProp name="fileEncoding">UTF-8</stringProp>
-          <stringProp name="filename">/tmp/${test-configuration}.csv</stringProp>
+          <stringProp name="filename">${tmp-folder}/${test-configuration}.csv</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
           <boolProp name="quotedData">false</boolProp>
           <boolProp name="recycle">true</boolProp>
@@ -271,7 +274,7 @@ def countCsvLines(String directory, String file) {
         </CriticalSectionController>
         <hashTree>
           <org.apache.jmeter.protocol.ssh.sampler.SSHCommandSampler guiclass="TestBeanGUI" testclass="org.apache.jmeter.protocol.ssh.sampler.SSHCommandSampler" testname="SSH Command - call ${objectToExecute} at ${objectContainer}" enabled="true">
-            <stringProp name="command">${remote-kitchen-location}/kitchen.sh -file=${remote-project-location}/${objectContainer}/${objectToExecute} ${objectParams}</stringProp>
+            <stringProp name="command">${remote-kitchen-dir}/kitchen.sh -file=${remote-base-dir}/${objectContainer}/${objectToExecute} ${objectParams}</stringProp>
             <stringProp name="connectionTimeout">${connection-time-out}</stringProp>
             <stringProp name="hostname">${host}</stringProp>
             <stringProp name="passphrase"></stringProp>
