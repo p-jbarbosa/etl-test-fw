@@ -18,12 +18,12 @@
     </parameter>
     <parameter>
       <name>P_TEST_ELEMENT</name>
-      <default_value>table-to-table</default_value>
+      <default_value>error</default_value>
       <description/>
     </parameter>
     <parameter>
       <name>P_TEST_OPERATION</name>
-      <default_value>compare</default_value>
+      <default_value>error</default_value>
       <description/>
     </parameter>
   </parameters>

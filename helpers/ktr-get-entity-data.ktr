@@ -445,11 +445,20 @@
 
 Parameters
 
-* P_ENTITY - the entity to get information from</note>
+* P_ENTITY - the entity to get information from
+
+Create Variables
+
+* V_PRIMARY_KEY
+* V_MAIN_TABLE
+* V_TABLE_TO_COMPARE
+* V_FIELDS_TO_COMPARE
+* V_PREPARE_ENVIRONMENT_DESTRUCTIVE
+* V_OUTPUT_EXT_TO_DELETE</note>
       <xloc>16</xloc>
       <yloc>16</yloc>
       <width>349</width>
-      <heigth>95</heigth>
+      <heigth>248</heigth>
       <fontname>Ubuntu</fontname>
       <fontsize>11</fontsize>
       <fontbold>N</fontbold>
@@ -474,7 +483,7 @@ Parameters
     </hop>
     <hop>
       <from>wtl-entity_data_definition</from>
-      <to>sv-entity_info</to>
+      <to>sv-entity_info_for_non_tests</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -518,7 +527,7 @@ Parameters
         <group/>
         <length>-1</length>
         <precision>-1</precision>
-        <trim_type>none</trim_type>
+        <trim_type>both</trim_type>
         <repeat>N</repeat>
       </field>
       <field>
@@ -531,7 +540,7 @@ Parameters
         <group/>
         <length>-1</length>
         <precision>-1</precision>
-        <trim_type>none</trim_type>
+        <trim_type>both</trim_type>
         <repeat>N</repeat>
       </field>
       <field>
@@ -544,7 +553,7 @@ Parameters
         <group/>
         <length>-1</length>
         <precision>-1</precision>
-        <trim_type>none</trim_type>
+        <trim_type>both</trim_type>
         <repeat>N</repeat>
       </field>
       <field>
@@ -557,7 +566,33 @@ Parameters
         <group/>
         <length>-1</length>
         <precision>-1</precision>
-        <trim_type>none</trim_type>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>prepare-environment-destructive</name>
+        <path>$.test-information.prepare-environment-destructive</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>outputfile-extension-to-delete</name>
+        <path>$.test-information.outputfile-extension-to-delete</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
         <repeat>N</repeat>
       </field>
     </fields>
@@ -582,13 +617,13 @@ Parameters
       </output>
     </remotesteps>
     <GUI>
-      <xloc>176</xloc>
-      <yloc>256</yloc>
+      <xloc>480</xloc>
+      <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>sv-entity_info</name>
+    <name>sv-entity_info_for_non_tests</name>
     <type>SetVariable</type>
     <description/>
     <distribute>Y</distribute>
@@ -623,6 +658,18 @@ Parameters
         <variable_type>ROOT_JOB</variable_type>
         <default_value/>
       </field>
+      <field>
+        <field_name>prepare-environment-destructive</field_name>
+        <variable_name>V_PREPARE_ENVIRONMENT_DESTRUCTIVE</variable_name>
+        <variable_type>ROOT_JOB</variable_type>
+        <default_value/>
+      </field>
+      <field>
+        <field_name>outputfile-extension-to-delete</field_name>
+        <variable_name>V_OUTPUT_EXT_TO_DELETE</variable_name>
+        <variable_type>ROOT_JOB</variable_type>
+        <default_value/>
+      </field>
     </fields>
     <use_formatting>Y</use_formatting>
     <attributes/>
@@ -634,8 +681,8 @@ Parameters
       </output>
     </remotesteps>
     <GUI>
-      <xloc>608</xloc>
-      <yloc>256</yloc>
+      <xloc>976</xloc>
+      <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -666,8 +713,8 @@ Parameters
       </output>
     </remotesteps>
     <GUI>
-      <xloc>400</xloc>
-      <yloc>256</yloc>
+      <xloc>736</xloc>
+      <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -676,5 +723,13 @@ Parameters
   <slave-step-copy-partition-distribution>
   </slave-step-copy-partition-distribution>
   <slave_transformation>N</slave_transformation>
-  <attributes/>
+  <attributes>
+    <group>
+      <name>explorerState</name>
+      <attribute>
+        <key>sv-entity_info_for_non_tests</key>
+        <value/>
+      </attribute>
+    </group>
+  </attributes>
 </transformation>
