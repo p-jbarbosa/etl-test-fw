@@ -74,7 +74,7 @@ log.info &apos;*** Base Dir &quot;&apos; + props.get(&quot;BaseDir&quot;) + &apo
 log.info &apos;*** Project Name &quot;&apos; + props.get(&quot;ProjectName&quot;) + &apos;&quot;&apos;
 log.info &apos;*** Project Configurations Dir &quot;&apos; + props.get(&quot;ProjectConfigurationsDir&quot;) + &apos;&quot;&apos;
 log.info &apos;*** Environment &quot;&apos; + props.get(&quot;Environment&quot;) + &apos;&quot;&apos;
-log.info &apos;*** Write test results to &quot;&apos; + vars.get(&quot;test-results-dir&quot;) + &apos;/&apos; + vars.get(&quot;test-entity&quot;)+ &apos;/result-&apos; + vars.get(&quot;test-configuration&quot;) + &apos;&quot;&apos;
+log.info &apos;*** Write test results to &quot;&apos; + vars.get(&quot;test-results-dir&quot;) + &apos;/&apos; + vars.get(&quot;test-entity&quot;)+ &apos;/&quot;&apos;
 	
 
 if (props.get(&quot;Entity&quot;) == null || props.get(&quot;TestConfiguration&quot;) == null || props.get(&quot;BaseDir&quot;) == null || props.get(&quot;ProjectName&quot;) == null || 
