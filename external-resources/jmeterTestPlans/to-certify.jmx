@@ -8,29 +8,29 @@
       <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
         <collectionProp name="Arguments.arguments">
-          <elementProp name="project-location" elementType="Argument">
-            <stringProp name="Argument.name">project-location</stringProp>
-            <stringProp name="Argument.value">${__P(ProjectLocation)}</stringProp>
+          <elementProp name="base-dir" elementType="Argument">
+            <stringProp name="Argument.name">base-dir</stringProp>
+            <stringProp name="Argument.value">${__P(BaseDir)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="kitchen-location" elementType="Argument">
-            <stringProp name="Argument.name">kitchen-location</stringProp>
-            <stringProp name="Argument.value">${__P(ProjectLocation)}/configurations/config-pdi-${__P(Environment)}</stringProp>
+          <elementProp name="kitchen-dir" elementType="Argument">
+            <stringProp name="Argument.name">kitchen-dir</stringProp>
+            <stringProp name="Argument.value">${__P(BaseDir)}/${__P(ProjectConfigurationsDir)}/config-pdi-${__P(Environment)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="test-entity" elementType="Argument">
             <stringProp name="Argument.name">test-entity</stringProp>
-            <stringProp name="Argument.value">${__P(TestEntity)}</stringProp>
+            <stringProp name="Argument.value">${__P(Entity)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="test-results-location" elementType="Argument">
-            <stringProp name="Argument.name">test-results-location</stringProp>
-            <stringProp name="Argument.value">${__P(ProjectLocation)}/tests/test-results</stringProp>
+          <elementProp name="test-configurations-dir" elementType="Argument">
+            <stringProp name="Argument.name">test-configurations-dir</stringProp>
+            <stringProp name="Argument.value">${__P(BaseDir)}/${__P(ProjectName)}/test-configurations</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="test-configurations-location" elementType="Argument">
-            <stringProp name="Argument.name">test-configurations-location</stringProp>
-            <stringProp name="Argument.value">${__P(ProjectLocation)}/tests/test-configurations</stringProp>
+          <elementProp name="test-results-dir" elementType="Argument">
+            <stringProp name="Argument.name">test-results-dir</stringProp>
+            <stringProp name="Argument.value">${__P(BaseDir)}/test-results/${__P(ProjectName)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="test-configuration" elementType="Argument">
@@ -68,18 +68,22 @@ def testPlanName = new TestPlanName().execute().minus(&quot;.jmx&quot;)
 
 log.info &apos;* START TEST PLAN &apos; + testPlanName
 log.info &apos;** Property Value used for Test Plan:&apos;
-log.info &apos;*** TestEntity &quot;&apos; + props.get(&quot;TestEntity&quot;) + &apos;&quot;&apos;
+log.info &apos;*** Entity &quot;&apos; + props.get(&quot;Entity&quot;) + &apos;&quot;&apos;
 log.info &apos;*** TestConfiguration &quot;&apos; + props.get(&quot;TestConfiguration&quot;) + &apos;&quot;&apos;
-log.info &apos;*** ProjectLocation &quot;&apos; + props.get(&quot;ProjectLocation&quot;) + &apos;&quot;&apos;
+log.info &apos;*** Base Dir &quot;&apos; + props.get(&quot;BaseDir&quot;) + &apos;&quot;&apos;
+log.info &apos;*** Project Name &quot;&apos; + props.get(&quot;ProjectName&quot;) + &apos;&quot;&apos;
+log.info &apos;*** Project Configurations Dir &quot;&apos; + props.get(&quot;ProjectConfigurationsDir&quot;) + &apos;&quot;&apos;
 log.info &apos;*** Environment &quot;&apos; + props.get(&quot;Environment&quot;) + &apos;&quot;&apos;
+log.info &apos;*** Write test results to &quot;&apos; + vars.get(&quot;test-results-dir&quot;) + &apos;/&apos; + vars.get(&quot;test-entity&quot;)+ &apos;/result-&apos; + vars.get(&quot;test-configuration&quot;) + &apos;&quot;&apos;
 	
 
-if (props.get(&quot;TestEntity&quot;) == null || props.get(&quot;TestConfiguration&quot;) == null || props.get(&quot;ProjectLocation&quot;) == null | props.get(&quot;Environment&quot;) == null) {
+if (props.get(&quot;Entity&quot;) == null || props.get(&quot;TestConfiguration&quot;) == null || props.get(&quot;BaseDir&quot;) == null || props.get(&quot;ProjectName&quot;) == null || 
+		props.get(&quot;ProjectConfigurationsDir&quot;) == null || props.get(&quot;Environment&quot;) == null) {
 
-	log.error &apos;Incorrect set of properties. We need TestEntity, ProjectLocation and TestConfiguration input values to procced!&apos;
+	log.error &apos;Incorrect set of properties. We need Entity, TestConfiguration, BaseDir, ProjectName,  ProjectConfigurationsDir and  Environment input values to procced!&apos;
 	SampleResult.setSuccessful(false);
-	SampleResult.setResponseMessage(&apos;Incorrect set of properties. We need TestEntity, ProjectLocation and TestConfiguration input values to procced!&apos;);
-	SampleResult.setResponseData(&apos;Incorrect set of properties. We need TestEntity, ProjectLocation and TestConfiguration input values to procced!&apos;);
+	SampleResult.setResponseMessage(&apos;Incorrect set of properties. We need Entity, TestConfiguration, BaseDir, ProjectName,  ProjectConfigurationsDir and  Environment input values to procced!&apos;);
+	SampleResult.setResponseData(&apos;Incorrect set of properties. We need Entity, TestConfiguration, BaseDir, ProjectName,  ProjectConfigurationsDir and  Environment input values to procced!&apos;);
 	IsSuccess=false;
 	SampleResult.setStopTestNow(true);
 	
@@ -90,21 +94,21 @@ if (props.get(&quot;TestEntity&quot;) == null || props.get(&quot;TestConfigurati
 
 	//CHECK KITCHEN EXISTENCE
 
-	def kitchenLocation = vars.get(&quot;kitchen-location&quot;)
-	log.info &apos;*** Checking Kitchen location at &apos; + kitchenLocation + &apos;/kitchen.sh&apos;
+	def kitchenDir = vars.get(&quot;kitchen-dir&quot;)
+	log.info &apos;*** Checking Kitchen location at &apos; + kitchenDir + &apos;/kitchen.sh&apos;
 	
-	if(new File(vars.get(&quot;kitchen-location&quot;) + &apos;/kitchen.sh&apos;).exists() != true){
-		log.error(&quot;__________________ Script Error: Kitchen not fount on  : &quot; + kitchenLocation)
+	if(new File(kitchenDir + &apos;/kitchen.sh&apos;).exists() != true){
+		log.error(&quot;__________________ Script Error: Kitchen not fount on  : &quot; + kitchenDir)
 		SampleResult.setSuccessful(false);
 		SampleResult.setResponseMessage(&quot;Failed to find kitchen.sh file&quot;);
-		SampleResult.setResponseData(&quot;Kitchen not fount at  : &quot; + kitchenLocation,&quot;UTF-8&quot;);
+		SampleResult.setResponseData(&quot;Kitchen not fount at  : &quot; + kitchenDir,&quot;UTF-8&quot;);
 		IsSuccess=false;
 		SampleResult.setStopTestNow(true);
 	}
 
 	//CHECKING .csv TEST CONFIGURATION
 
-	def testConfigurationDirectory = vars.get(&quot;test-configurations-location&quot;) + &apos;/&apos; + vars.get(&quot;test-entity&quot;)
+	def testConfigurationDirectory = vars.get(&quot;test-configurations-dir&quot;) + &apos;/&apos; + vars.get(&quot;test-entity&quot;)
 	def testConfigurationFile = vars.get(&quot;test-configuration&quot;) + &apos;.csv&apos;
 	
 	
@@ -159,7 +163,7 @@ def countCsvLines(String directory, String file) {
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="csvDataConfig Load Configuration Execution" enabled="true">
           <stringProp name="delimiter">;</stringProp>
           <stringProp name="fileEncoding">UTF-8</stringProp>
-          <stringProp name="filename">${test-configurations-location}/${test-entity}/${test-configuration}.csv</stringProp>
+          <stringProp name="filename">${test-configurations-dir}/${test-entity}/${test-configuration}.csv</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
           <boolProp name="quotedData">false</boolProp>
           <boolProp name="recycle">false</boolProp>
@@ -185,7 +189,7 @@ def countCsvLines(String directory, String file) {
                 </elementProp>
                 <elementProp name="" elementType="Argument">
                   <stringProp name="Argument.name"></stringProp>
-                  <stringProp name="Argument.value">${kitchen-location}/kitchen.sh -file=${project-location}/${objectContainer}/${objectToExecute} ${objectParams}</stringProp>
+                  <stringProp name="Argument.value">${kitchen-dir}/kitchen.sh -file=${base-dir}/${objectContainer}/${objectToExecute} ${objectParams}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
@@ -243,7 +247,7 @@ def countCsvLines(String directory, String file) {
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename">${test-results-location}/${test-entity}/result-${test-configuration}-${__time(YYYYMMddHHmmss,curTime)}.csv</stringProp>
+        <stringProp name="filename">${test-results-dir}/${test-entity}/result-${test-configuration}-${__time(YYYYMMddHHmmss,curTime)}.csv</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
