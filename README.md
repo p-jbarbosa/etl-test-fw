@@ -77,12 +77,12 @@ This Jmeter Test Plan Strategy is based on three Jmeter main concepts:
 
 It receives the follow input paramters:
 
-* Entity - the name of the entity that is being tested. Allows the Jmeter Test Plan to point to the correct Test Configuration .csv file and the ETF to load information to be used if a ETF Library artifact should be used
-* TestConfiguration - the name of the Test Configuration .csv file that will be executed
-* BaseDir - the complete path to the Main Project Folder
-* ProjectName - the Project folder name that holds the Information Entity we are going to test
-* ProjectConfigurationsDir - the folder that holds all the available configurations
-* Environment - the configuration environment that should be used when executing the tests
+- Entity - the name of the entity that is being tested. Allows the Jmeter Test Plan to point to the correct Test Configuration .csv file and the ETF to load information to be used if a ETF Library artifact should be used
+- TestConfiguration - the name of the Test Configuration .csv file that will be executed
+- BaseDir - the complete path to the Main Project Folder
+- ProjectName - the Project folder name that holds the Information Entity we are going to test
+- ProjectConfigurationsDir - the folder that holds all the available configurations
+- Environment - the configuration environment that should be used when executing the tests
 
 Command to execute it via UI:
 
@@ -96,16 +96,16 @@ This implementation uses the Jmeter Test Plan _../etl-test-framework/external-re
 
 This Jmeter Test Plan receives the follow input paramters:
 
-* Host - the ip address to the machine where the ETL code is located
-* Port - the ssh port used to connect to the remote machine
-* User - the username that will be used on the ssh connection
-* Password - the password that will be used on the ssh connection
-* Entity - the name of the entity that is being tested. Allows the Jmeter Test Plan to point to the correct Test Configuration .csv file and the ETF to load information to be used if a ETF Library artifact should be used
-* TestConfiguration - the name of the Test Configuration .csv file that will be executed
-* BaseDir - the complete path to the Main Project Folder
-* ProjectName - the Project folder name that holds the Information Entity we are going to test
-* ProjectConfigurationsDir - the folder that holds all the available configurations
-* Environment - the configuration environment that should be used when executing the tests
+- Host - the ip address to the machine where the ETL code is located
+- Port - the ssh port used to connect to the remote machine
+- User - the username that will be used on the ssh connection
+- Password - the password that will be used on the ssh connection
+- Entity - the name of the entity that is being tested. Allows the Jmeter Test Plan to point to the correct Test Configuration .csv file and the ETF to load information to be used if a ETF Library artifact should be used
+- TestConfiguration - the name of the Test Configuration .csv file that will be executed
+- BaseDir - the complete path to the Main Project Folder
+- ProjectName - the Project folder name that holds the Information Entity we are going to test
+- ProjectConfigurationsDir - the folder that holds all the available configurations
+- Environment - the configuration environment that should be used when executing the tests
 
 The implementation is similar to the _Local_ one, with the exception that the executed kitchen.sh is made via ssh protocol, using the _SSH Protocol Plugin_ installed on Jmeter.
 
@@ -119,18 +119,18 @@ Command to execute via UI:
 
 **Test Configurations** are a sequence of steps that represent the whole test scenario to be performed. One **Test Configuration** can be divided into 3 steps, for instance:
 
-* prepare the environment to execute the ETL
-* execute the ETL
-* evaluate the data produced by the ETL execution
+- prepare the environment to execute the ETL
+- execute the ETL
+- evaluate the data produced by the ETL execution
 
 They are represented by .csv files, where each line describes the step to be executed by PDI via kitchen - currently only kitchen is supported. We can execute ETF code and project ETL.
 
 Each Test Configuration step is described by the following fields:
 
-* objectContainer - the relative path to the folder that holds the ETL code to execute
-* objectToExecute - the name of the job that should be executed
-* objectParams - the parameters that the job requires using the structure expected by kitchen
-* expectedStatus - the status that we expect after running these step, 0 for OK, 1 for not ok (remember that we might want to test if the current step throws an error)
+- objectContainer - the relative path to the folder that holds the ETL code to execute
+- objectToExecute - the name of the job that should be executed
+- objectParams - the parameters that the job requires using the structure expected by kitchen
+- expectedStatus - the status that we expect after running these step, 0 for OK, 1 for not ok (remember that we might want to test if the current step throws an error)
 
 #### Test Configuration Files Location
 

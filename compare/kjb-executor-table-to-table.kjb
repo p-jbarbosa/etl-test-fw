@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job>
-  <name>kjb-executor-table-to-table-w-agg-results</name>
+  <name>kjb-executor-table-to-table</name>
   <description/>
   <extended_description/>
   <job_version/>
+  <job_status>0</job_status>
   <directory>/</directory>
   <created_user>-</created_user>
   <created_date>2019/02/26 11:30:28.357</created_date>
@@ -559,6 +560,13 @@ V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
     </notepad>
   </notepads>
   <attributes>
+    <group>
+      <name>JobRestart</name>
+      <attribute>
+        <key>UniqueConnections</key>
+        <value>N</value>
+      </attribute>
+    </group>
     <group>
       <name>METASTORE.pentaho</name>
       <attribute>

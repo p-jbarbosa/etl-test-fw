@@ -453,12 +453,15 @@ Create Variables
 * V_MAIN_TABLE
 * V_TABLE_TO_COMPARE
 * V_FIELDS_TO_COMPARE
+* V_FIELDS_TO_ORDER_BY
 * V_PREPARE_ENVIRONMENT_DESTRUCTIVE
-* V_OUTPUT_EXT_TO_DELETE</note>
+* V_OUTPUT_EXT_TO_DELETE
+* V_ETL_CONNECTION
+* V_TESTS_CONNECTION</note>
       <xloc>16</xloc>
       <yloc>16</yloc>
       <width>349</width>
-      <heigth>248</heigth>
+      <heigth>299</heigth>
       <fontname>Ubuntu</fontname>
       <fontsize>11</fontsize>
       <fontbold>N</fontbold>
@@ -518,6 +521,32 @@ Create Variables
     </file>
     <fields>
       <field>
+        <name>etlConnection</name>
+        <path>$.connections.etl</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>testsConnection</name>
+        <path>$.connections.tests</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
         <name>primaryKey</name>
         <path>$.primaryKey</path>
         <type>String</type>
@@ -559,6 +588,19 @@ Create Variables
       <field>
         <name>fieldsToCompare</name>
         <path>$.fieldsToCompare</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>fieldsToOrderBy</name>
+        <path>$.fieldsToOrderBy</path>
         <type>String</type>
         <format/>
         <currency/>
@@ -617,7 +659,7 @@ Create Variables
       </output>
     </remotesteps>
     <GUI>
-      <xloc>480</xloc>
+      <xloc>496</xloc>
       <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
@@ -634,6 +676,18 @@ Create Variables
       <schema_name/>
     </partitioning>
     <fields>
+      <field>
+        <field_name>etlConnection</field_name>
+        <variable_name>V_ETL_CONNECTION</variable_name>
+        <variable_type>ROOT_JOB</variable_type>
+        <default_value/>
+      </field>
+      <field>
+        <field_name>testsConnection</field_name>
+        <variable_name>V_TESTS_CONNECTION</variable_name>
+        <variable_type>ROOT_JOB</variable_type>
+        <default_value/>
+      </field>
       <field>
         <field_name>primaryKey</field_name>
         <variable_name>V_PRIMARY_KEY</variable_name>
@@ -667,6 +721,12 @@ Create Variables
       <field>
         <field_name>outputfile-extension-to-delete</field_name>
         <variable_name>V_OUTPUT_EXT_TO_DELETE</variable_name>
+        <variable_type>ROOT_JOB</variable_type>
+        <default_value/>
+      </field>
+      <field>
+        <field_name>fieldsToOrderBy</field_name>
+        <variable_name>V_FIELDS_TO_ORDER_BY</variable_name>
         <variable_type>ROOT_JOB</variable_type>
         <default_value/>
       </field>
@@ -726,10 +786,6 @@ Create Variables
   <attributes>
     <group>
       <name>explorerState</name>
-      <attribute>
-        <key>sv-entity_info_for_non_tests</key>
-        <value/>
-      </attribute>
     </group>
   </attributes>
 </transformation>

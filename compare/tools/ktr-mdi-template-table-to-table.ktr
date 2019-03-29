@@ -442,6 +442,8 @@ Variables used (from entity description)
 
 * V_TABLE_TO_COMPARE
 * V_MAIN_TABLE
+* V_FIELDS_TO_COMPARE
+* V_FIELDS_TO_ORDER_BY
 
 MDI
 
@@ -449,7 +451,7 @@ MDI
       <xloc>32</xloc>
       <yloc>32</yloc>
       <width>406</width>
-      <heigth>180</heigth>
+      <heigth>214</heigth>
       <fontname>Ubuntu</fontname>
       <fontsize>11</fontsize>
       <fontbold>N</fontbold>
@@ -467,7 +469,7 @@ MDI
     </notepad>
   </notepads>
   <connection>
-    <name>legalHold</name>
+    <name>legalHold_ETF</name>
     <server>${LEGAL_DB_HOST}</server>
     <type>MYSQL</type>
     <access>Native</access>
@@ -644,10 +646,10 @@ MDI
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>legalHold</connection>
-    <sql>select LegalHold, Flag
+    <connection>legalHold_ETF</connection>
+    <sql>select ${V_FIELDS_TO_COMPARE}
 from ${V_TABLE_TO_COMPARE}
-order by LegalHold;</sql>
+order by ${V_FIELDS_TO_ORDER_BY};</sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>
@@ -678,10 +680,10 @@ order by LegalHold;</sql>
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>legalHold</connection>
-    <sql>select LegalHold, Flag
+    <connection>legalHold_ETF</connection>
+    <sql>select ${V_FIELDS_TO_COMPARE}
 from ${V_MAIN_TABLE}
-order by LegalHold;</sql>
+order by ${V_FIELDS_TO_ORDER_BY};</sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>

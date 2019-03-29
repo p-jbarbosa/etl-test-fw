@@ -558,6 +558,30 @@
         <precision>-1</precision>
         <trim_type>both</trim_type>
       </field>
+      <field>
+        <name>etl_connection</name>
+        <variable>${V_ETL_CONNECTION}</variable>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+      </field>
+      <field>
+        <name>tests_connections</name>
+        <variable>${V_TESTS_CONNECTION}</variable>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+      </field>
     </fields>
     <attributes/>
     <cluster_schema/>
@@ -609,6 +633,20 @@
         <target_detail>N</target_detail>
         <source_step>sfieldRows-get_separed_fields</source_step>
         <source_field>fieldToCompare</source_field>
+      </mapping>
+      <mapping>
+        <target_step_name>ti-object-table</target_step_name>
+        <target_attribute_key>CONNECTIONNAME</target_attribute_key>
+        <target_detail>N</target_detail>
+        <source_step>sfieldRows-get_separed_fields</source_step>
+        <source_field>etl_connection</source_field>
+      </mapping>
+      <mapping>
+        <target_step_name>ti-correct-table</target_step_name>
+        <target_attribute_key>CONNECTIONNAME</target_attribute_key>
+        <target_detail>N</target_detail>
+        <source_step>sfieldRows-get_separed_fields</source_step>
+        <source_field>tests_connections</source_field>
       </mapping>
     </mappings>
     <attributes/>
@@ -674,7 +712,8 @@
     <limitRowsNumber>0</limitRowsNumber>
     <logmessage>*** INFO: MDI TABLE-TO-TABLE ***
 
-V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
+V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}
+V_FIELDS_TO_ORDER_BY - ${V_FIELDS_TO_ORDER_BY}</logmessage>
     <fields>
       </fields>
     <attributes/>

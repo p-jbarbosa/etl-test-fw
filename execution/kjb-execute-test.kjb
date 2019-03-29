@@ -13,17 +13,17 @@
   <parameters>
     <parameter>
       <name>P_ENTITY</name>
-      <default_value>error</default_value>
+      <default_value>LegalHold</default_value>
       <description/>
     </parameter>
     <parameter>
       <name>P_TEST_ELEMENT</name>
-      <default_value>error</default_value>
+      <default_value>table-to-table</default_value>
       <description/>
     </parameter>
     <parameter>
       <name>P_TEST_OPERATION</name>
-      <default_value>error</default_value>
+      <default_value>compare</default_value>
       <description/>
     </parameter>
   </parameters>
@@ -522,7 +522,8 @@ V_ERROR_MSG: ${V_ERROR_MSG}</logmessage>
       <logmessage>V_PRIMARY_KEY - ${V_PRIMARY_KEY}
 V_MAIN_TABLE - ${V_MAIN_TABLE}
 V_TABLE_TO_COMPARE - ${V_TABLE_TO_COMPARE}
-V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
+V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}
+V_FIELDS_TO_ORDER_BY- ${V_FIELDS_TO_ORDER_BY}</logmessage>
       <loglevel>Minimal</loglevel>
       <logsubject>*** INFO: ENTITY DATA ***</logsubject>
       <parallel>N</parallel>
@@ -533,13 +534,13 @@ V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>kjb-executor_table_to_table-w_agg_results</name>
+      <name>kjb-executor_$P_TEST_ELEMENT</name>
       <description/>
       <type>JOB</type>
       <attributes/>
       <specification_method>filename</specification_method>
       <job_object_id/>
-      <filename>${ETL_TEST_FRAMEWORK_DIR}/${P_TEST_OPERATION}/kjb-executor-table-to-table-w-agg-results.kjb</filename>
+      <filename>${ETL_TEST_FRAMEWORK_DIR}/${P_TEST_OPERATION}/kjb-executor-${P_TEST_ELEMENT}.kjb</filename>
       <jobname/>
       <directory/>
       <arg_from_previous>N</arg_from_previous>
@@ -627,7 +628,7 @@ V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
     </hop>
     <hop>
       <from>wtl-entity-data</from>
-      <to>kjb-executor_table_to_table-w_agg_results</to>
+      <to>kjb-executor_$P_TEST_ELEMENT</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -635,7 +636,7 @@ V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>kjb-executor_table_to_table-w_agg_results</from>
+      <from>kjb-executor_$P_TEST_ELEMENT</from>
       <to>wtl-control_over_errors</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
