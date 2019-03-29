@@ -3,9 +3,9 @@
 - [README](#readme)
   - [How to Use it](#how-to-use-it)
   - [ETL Test Library](#etl-test-library)
+    - [Data Entity Definition](#data-entity-definition)
     - [Folder Structure](#folder-structure)
     - [Test Artifacts](#test-artifacts)
-    - [Information Entities](#information-entities)
   - [Jmeter Test Plans](#jmeter-test-plans)
     - [Local Test Plan](#local-test-plan)
     - [Remote Test Plan](#remote-test-plan)
@@ -39,17 +39,46 @@ On this example, _FWs-Sanbox_ is the Main Project rdirectory, _etl-dummy_ is the
 
 ## ETL Test Library
 
-ToDo.
+The idea behind this is to have a library of reusable tests that can be shared and used for any PDI project.
+
+The requirements that are considered to make it indepent are:
+
+- it should be kept under a separated git project
+- all provided tools should be project agnostic and rely only on configuration files and data entity definitions
+- it should enforce code rules as much as possible, like filename structures, using for example git hooks to keep important standards to her executions
+- it should always be executed inside their on code structure and not rely on any project code except configuration and data entity definitions
+- it should have tools to prepare test environments before the test executions
+
+### Data Entity Definition
+
+This is a concept dedicated to solve the problem of sharing execution information between the ETL project and the ETL Test Framework. Beyond the project configurations, to build a shared library of tests the ETL Test Framework needs information about the entities that should be used during the test execution. Information such as tables where information should be fetched, fields that we need to consider for test purposes, connection names that should be used to obtain information, or files that hold the correct information that should be used by ETL Test Framework to compare values.
+
+The data entity definition can be the tool to link the ETL code and the ETL Test Framework. A Data Entity Definition is currently a json file with the attributes that are necessary to the table to table compare service. Above is the example for the Entity LegalHold used under the etl-dummy project.
+
+``` json
+{
+    "connections": {
+        "etl":"legalHold",
+        "tests": "legalHold_ETF"
+    },
+    "primaryKey": "",
+    "mainTable": "legalhold_list",
+    "tableToCompare": "legalhold_correct",
+    "fieldsToCompare": "LegalHold,Flag",
+    "fieldsToOrderBy": "LegalHold",
+    "produces-output-files": "Y",
+    "test-information":{
+        "prepare-environment-destructive": "Y",
+        "outputfile-extension-to-delete": "csv"
+    }
+}
+```
 
 ### Folder Structure
 
 ToDo.
 
 ### Test Artifacts
-
-ToDo.
-
-### Information Entities
 
 ToDo.
 
