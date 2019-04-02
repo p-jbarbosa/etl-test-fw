@@ -196,17 +196,33 @@ The last stage, the ETF test digestion, is controlled by two variables:
 - V_ERRORS - and integer the amount of errors detected; when different from zero the ETF ends the execution with an error
 - V_ERROR_MSG - a text field with the message explaining the errors
 
-All developed Test Elements should create and instantiate these variables.
+All developed Test Elements should create and instantiate these variables to help _jb-execute-test_ perform correctly.
 
 #### jb-prepare-test-environment
 
-ToDo.
+This is a very simple utility, still in a very early age, which is to say that the current implementation only has the merit of signal his importance. What we are trying to achieve here is a clean utility that can deal with data test environment preparation: truncate tables, or remove output files, clinical inserts, and so on.
+
+This utility is meant to be used outside the regular _jb-execute-test_ executor to enforce a clear separation between these two services - eventually, at least the parameters will be different and one thing is to execute a Test other will be to execute a preparation environment.
+
+This service execution is divided into 2 stages:
+
+- getting information about how to prepare the environment, based on the Project Name and Entity that will be used on the following test
+- and, prepare the environment, which for now consists of truncating tables and delete files
+
+To execute this operations the services needs to receive these paramters:
+
+- P_PROJECT_NAME - the project that tracks the testing Entity
+- P_ENTITY - the preparation scope object where the ETF is going to fetch the Data Entity Definition
+
+Next work would be to add more use cases to this preparation and improve the information available on the Data Entity Definition .json file (currently is confusing).
 
 ### How to Build one Test Artifact
 
 ToDo.
 
 ### Artifact List
+
+ToDo.
 
 ## Jmeter Test Plans
 
