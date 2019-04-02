@@ -1,77 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job>
-  <name>kjb-prepare-test-environment</name>
+  <name>jb-load-test-environment</name>
   <description/>
   <extended_description/>
   <job_version/>
   <job_status>0</job_status>
   <directory>/</directory>
   <created_user>-</created_user>
-  <created_date>2019/02/21 18:58:33.860</created_date>
+  <created_date>2019/04/01 13:03:02.479</created_date>
   <modified_user>-</modified_user>
-  <modified_date>2019/02/21 18:58:33.860</modified_date>
+  <modified_date>2019/04/01 13:03:02.479</modified_date>
   <parameters>
     <parameter>
       <name>P_ENTITY</name>
-      <default_value>error</default_value>
+      <default_value/>
+      <description/>
+    </parameter>
+    <parameter>
+      <name>P_EXPECTED_VALUE</name>
+      <default_value/>
+      <description/>
+    </parameter>
+    <parameter>
+      <name>P_FILTER_DATA</name>
+      <default_value/>
+      <description/>
+    </parameter>
+    <parameter>
+      <name>P_PROJECT_NAME</name>
+      <default_value/>
       <description/>
     </parameter>
   </parameters>
-  <connection>
-    <name>legalHold</name>
-    <server>${LEGAL_DB_HOST}</server>
-    <type>MYSQL</type>
-    <access>Native</access>
-    <database>${LEGAL_DB_DATABASE_NAME}</database>
-    <port>${LEGAL_DB_PORT_NUMBER}</port>
-    <username>${LEGAL_DB_USERNAME}</username>
-    <password>${LEGAL_DB_PASSWORD}</password>
-    <servername/>
-    <data_tablespace/>
-    <index_tablespace/>
-    <attributes>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>IS_CLUSTERED</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>PORT_NUMBER</code>
-        <attribute>${LEGAL_DB_PORT_NUMBER}</attribute>
-      </attribute>
-      <attribute>
-        <code>PRESERVE_RESERVED_WORD_CASE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>QUOTE_ALL_FIELDS</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>STREAM_RESULTS</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>USE_POOLING</code>
-        <attribute>N</attribute>
-      </attribute>
-    </attributes>
-  </connection>
   <slaveservers>
     </slaveservers>
   <job-log-table>
@@ -415,46 +375,6 @@
   <shared_objects_file/>
   <entries>
     <entry>
-      <name>delfile-outputfiles</name>
-      <description/>
-      <type>DELETE_FILES</type>
-      <attributes/>
-      <arg_from_previous>N</arg_from_previous>
-      <include_subfolders>N</include_subfolders>
-      <fields>
-        <field>
-          <name>${ETL_OUTPUT_DIR}/${P_ENTITY}/</name>
-          <filemask>.*\.${V_OUTPUT_EXT_TO_DELETE}$</filemask>
-        </field>
-      </fields>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>800</xloc>
-      <yloc>208</yloc>
-      <attributes_kjc/>
-    </entry>
-    <entry>
-      <name>truncateTbl-main-table</name>
-      <description/>
-      <type>TRUNCATE_TABLES</type>
-      <attributes/>
-      <connection>legalHold</connection>
-      <arg_from_previous>N</arg_from_previous>
-      <fields>
-        <field>
-          <name>${V_MAIN_TABLE}</name>
-          <schemaname/>
-        </field>
-      </fields>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>1024</xloc>
-      <yloc>208</yloc>
-      <attributes_kjc/>
-    </entry>
-    <entry>
       <name>Start</name>
       <description/>
       <type>SPECIAL</type>
@@ -473,48 +393,57 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>48</xloc>
-      <yloc>208</yloc>
+      <yloc>320</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>se-destructive</name>
+      <name>sVariables-project</name>
       <description/>
-      <type>SIMPLE_EVAL</type>
+      <type>SET_VARIABLES</type>
       <attributes/>
-      <valuetype>variable</valuetype>
-      <fieldname/>
-      <variablename>${V_PREPARE_ENVIRONMENT_DESTRUCTIVE}</variablename>
-      <fieldtype>string</fieldtype>
-      <mask/>
-      <comparevalue>Y</comparevalue>
-      <minvalue/>
-      <maxvalue/>
-      <successcondition>equal</successcondition>
-      <successnumbercondition>equal</successnumbercondition>
-      <successbooleancondition>false</successbooleancondition>
-      <successwhenvarset>N</successwhenvarset>
+      <replacevars>Y</replacevars>
+      <filename>${CONFIG_DIR}/properties/${P_PROJECT_NAME}.properties</filename>
+      <file_variable_type>PARENT_JOB</file_variable_type>
+      <fields>
+      </fields>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>544</xloc>
-      <yloc>208</yloc>
+      <xloc>976</xloc>
+      <yloc>320</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>wtl-starting_no_destructive_test</name>
+      <name>wtl-missing_project_properties</name>
       <description/>
       <type>WRITE_TO_LOG</type>
       <attributes/>
-      <logmessage>*** INFO ***
-
-P_DESTRUCTIVE_TEST - ${P_DESTRUCTIVE_TEST}</logmessage>
+      <logmessage>Missing properties file for ${P_PROJECT_NAME}.</logmessage>
       <loglevel>Minimal</loglevel>
-      <logsubject/>
+      <logsubject>*** ERROR: LOAD PROJECT ENVIRONMENT ***</logsubject>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>544</xloc>
-      <yloc>432</yloc>
+      <xloc>976</xloc>
+      <yloc>448</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>wtl-load_project_environment</name>
+      <description/>
+      <type>WRITE_TO_LOG</type>
+      <attributes/>
+      <logmessage>PROJECT NAME - ${P_PROJECT_NAME}
+FILTER DATA - ${P_FILTER_DATA}
+EXPECTED VALUE - ${P_EXPECTED_VALUE}
+ENTITY - ${P_ENTITY}</logmessage>
+      <loglevel>Minimal</loglevel>
+      <logsubject>*** INFO: LOAD PROJECT ENVIRONMENT START INFORMATION ***</logsubject>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>272</xloc>
+      <yloc>320</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -525,121 +454,47 @@ P_DESTRUCTIVE_TEST - ${P_DESTRUCTIVE_TEST}</logmessage>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1024</xloc>
-      <yloc>432</yloc>
+      <xloc>1152</xloc>
+      <yloc>320</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>ktr-get-entity-data</name>
+      <name>sVariables-entity&amp;filter-data&amp;expected-count</name>
       <description/>
-      <type>TRANS</type>
+      <type>SET_VARIABLES</type>
       <attributes/>
-      <specification_method>filename</specification_method>
-      <trans_object_id/>
-      <filename>${ETL_TEST_FRAMEWORK_DIR}/helpers/ktr-get-entity-data.ktr</filename>
-      <transname/>
-      <arg_from_previous>N</arg_from_previous>
-      <params_from_previous>N</params_from_previous>
-      <exec_per_row>N</exec_per_row>
-      <clear_rows>N</clear_rows>
-      <clear_files>N</clear_files>
-      <set_logfile>N</set_logfile>
-      <logfile/>
-      <logext/>
-      <add_date>N</add_date>
-      <add_time>N</add_time>
-      <loglevel>Basic</loglevel>
-      <cluster>N</cluster>
-      <slave_server_name/>
-      <set_append_logfile>N</set_append_logfile>
-      <wait_until_finished>Y</wait_until_finished>
-      <follow_abort_remote>N</follow_abort_remote>
-      <create_parent_folder>N</create_parent_folder>
-      <logging_remote_work>N</logging_remote_work>
-      <run_configuration>Pentaho local</run_configuration>
-      <parameters>
-        <pass_all_parameters>Y</pass_all_parameters>
-        <parameter>
-          <name>P_ENTITY</name>
-          <stream_name/>
-          <value>${P_ENTITY}</value>
-        </parameter>
-      </parameters>
+      <replacevars>Y</replacevars>
+      <filename/>
+      <file_variable_type>CURRENT_JOB</file_variable_type>
+      <fields>
+        <field>
+          <variable_name>V_ENTITY</variable_name>
+          <variable_value>${P_ENTITY}</variable_value>
+          <variable_type>PARENT_JOB</variable_type>
+        </field>
+        <field>
+          <variable_name>V_EXPECTED_VALUE</variable_name>
+          <variable_value>${P_EXPECTED_VALUE}</variable_value>
+          <variable_type>PARENT_JOB</variable_type>
+        </field>
+        <field>
+          <variable_name>V_FILTER_DATA</variable_name>
+          <variable_value>${P_FILTER_DATA}</variable_value>
+          <variable_type>PARENT_JOB</variable_type>
+        </field>
+      </fields>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>208</xloc>
-      <yloc>208</yloc>
-      <attributes_kjc/>
-    </entry>
-    <entry>
-      <name>wtl-entity-data</name>
-      <description/>
-      <type>WRITE_TO_LOG</type>
-      <attributes/>
-      <logmessage>V_PRIMARY_KEY - ${V_PRIMARY_KEY}
-V_MAIN_TABLE - ${V_MAIN_TABLE}
-V_TABLE_TO_COMPARE - ${V_TABLE_TO_COMPARE}
-V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
-      <loglevel>Minimal</loglevel>
-      <logsubject>*** INFO: ENTITY DATA ***</logsubject>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>368</xloc>
-      <yloc>208</yloc>
+      <xloc>592</xloc>
+      <yloc>320</yloc>
       <attributes_kjc/>
     </entry>
   </entries>
   <hops>
     <hop>
-      <from>delfile-outputfiles</from>
-      <to>truncateTbl-main-table</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>se-destructive</from>
-      <to>delfile-outputfiles</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>se-destructive</from>
-      <to>wtl-starting_no_destructive_test</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>N</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>truncateTbl-main-table</from>
-      <to>Success</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>wtl-starting_no_destructive_test</from>
-      <to>Success</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
       <from>Start</from>
-      <to>ktr-get-entity-data</to>
+      <to>wtl-load_project_environment</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -647,8 +502,8 @@ V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>ktr-get-entity-data</from>
-      <to>wtl-entity-data</to>
+      <from>sVariables-project</from>
+      <to>Success</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -656,8 +511,26 @@ V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>wtl-entity-data</from>
-      <to>se-destructive</to>
+      <from>sVariables-project</from>
+      <to>wtl-missing_project_properties</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>wtl-load_project_environment</from>
+      <to>sVariables-entity&amp;filter-data&amp;expected-count</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>sVariables-entity&amp;filter-data&amp;expected-count</from>
+      <to>sVariables-project</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -667,16 +540,24 @@ V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
   </hops>
   <notepads>
     <notepad>
-      <note>Purpose - prepare test environment
-
-Use Case - to be used when a specific enviroment preparation is need
+      <note>Purpose - load the environment necessary to run the test and assigns values to variables
 
 Parameters:
-* P_ENTITY - the preparation scope object </note>
-      <xloc>16</xloc>
-      <yloc>16</yloc>
-      <width>477</width>
-      <heigth>112</heigth>
+
+* P_PROJECT_NAME - the project that is responsible for the data we are testing
+* P_ENTITY - the test scope entity
+* P_FILTER_DATA - the filter that could be use to reduce the data in test
+* P_EXPECTED_VALUE - the value that we might expect from the test
+
+Variables initialized:
+
+* V_ENTITY - the entity we are going to test
+* V_FILTER_DATA - the filter that could be use to reduce the data in test
+* V_EXPECTED_VALUE - the value that we might expect from the test</note>
+      <xloc>32</xloc>
+      <yloc>32</yloc>
+      <width>609</width>
+      <heigth>248</heigth>
       <fontname>Ubuntu</fontname>
       <fontsize>11</fontsize>
       <fontbold>N</fontbold>

@@ -1,11 +1,16 @@
 # README
 
 - [README](#readme)
+  - [ETL-Dummy Project](#etl-dummy-project)
   - [How to Use it](#how-to-use-it)
   - [ETL Test Library](#etl-test-library)
     - [Data Entity Definition](#data-entity-definition)
     - [Folder Structure](#folder-structure)
-    - [Test Artifacts](#test-artifacts)
+    - [How ETF works](#how-etf-works)
+      - [jb-execute-test](#jb-execute-test)
+      - [jb-prepare-test-environment](#jb-prepare-test-environment)
+    - [How to Build one Test Artifact](#how-to-build-one-test-artifact)
+    - [Artifact List](#artifact-list)
   - [Jmeter Test Plans](#jmeter-test-plans)
     - [Local Test Plan](#local-test-plan)
     - [Remote Test Plan](#remote-test-plan)
@@ -15,13 +20,43 @@
 
 This project purpose is to deliver an approach to a centralized ETL Test framework - approach in the sense that it is not official and still needs validation. It holds reusable code made for kettle execution (you can think of this as the begining of a common ETL Test Library), and Jmeter reusable test plans that can orchestrate test scenarios composed by several steps.
 
+## ETL-Dummy Project
+
+The present documentation is using an etl-dummy project to explain the concepts that are supporting this approach. The project is made of two main repositories:
+
+- etl-dummy
+  - the ETL code
+  - [github repo](https://github.com/p-jbarbosa/etl-dummy)
+- etl-dummy-configs
+  - the configurations
+  - [github repo](https://github.com/p-jbarbosa/etl-dummy-configs)
+
+The folder structure of this project after cloning the different projects should be similiar to this one:
+
+``` txt
+FWs-Sandbox/
+├── etl-dummy
+├── etl-dummy-configs
+├── etl-test-framework
+├── input-files
+├── output-files
+└── test-results
+```
+
 ## How to Use it
 
 The ETL Test Framework (ETF) can be used to run tests over an ETL project either by executing the available ETL Test components from their Library, on isolated kettle executions, or by executing Test Configurations, via Jmeter, that represent a complete test scenario - for example, a test scenario could be made by three steps: first step could be prepare the environment to run the ETL, the second step execute the ETL that we want to test, and the third step performing the validation on the data that resulted from the ETL execution.
 
-The ETF is added to an ETL project by adding the path to the local main folder on the project's _kettle.properties_. By doing this we can run the ETL using the same kitchen that we use to run the ETL project code. The line on _kettle.properties_ should be:
+The ETF is added to an ETL project by cloning the current project to the Main Project folder and by creating/filling the necessary properties under the _kettle.properties_ and property environment files. 
 
-> ETL_TEST_FRAMEWORK_DIR=/local/path/to/etl-test-framework
+The lines on _kettle.properties_ necessary to link the ETF to the project are:
+
+- ETL_TEST_FRAMEWORK_DIR=/local/path/to/etl-test-framework
+- ETL_TEST_FRAMEWORK_HOME=/path/to/the&framework/code (it could be a PUC path)
+
+Beyond these properties, the ETF also requires the different etl projects to add one property to their _project_.properties file. For etl-dummy project we need to add the following property to the _../properties/etl-dummy.properties_ file:
+
+- ENTITIES_HOME=/path/to/the/entites/folder/under/the/sub-project
 
 Ideally, ETF is cloned into the Main Project directory, like the example below:
 
@@ -35,25 +70,25 @@ FWs-Sandbox/
 └── test-results
 ```
 
-On this example, _FWs-Sanbox_ is the Main Project rdirectory, _etl-dummy_ is the folder that holds the ETL code, _etl-dummy-configs_ is the configurations keeper and _etl-test-framework_ is the ETF main folder.
+On this example, _FWs-Sanbox_ is the Main Project directory, _etl-dummy_ is the folder that holds the ETL code, _etl-dummy-configs_ is the configurations keeper and _etl-test-framework_ is the ETF main folder.
 
 ## ETL Test Library
 
-The idea behind this is to have a library of reusable tests that can be shared and used for any PDI project.
+The idea behind is to have a library of reusable tests that can be shared and used for different PDI projects.
 
 The requirements that are considered to make it indepent are:
 
-- it should be kept under a separated git project
-- all provided tools should be project agnostic and rely only on configuration files and data entity definitions
+- it should be kept under a separated git project so we can apply different rules to control it
+- all provided test tools should be project agnostic and rely only on configuration files and data Entity Definitions
 - it should enforce code rules as much as possible, like filename structures, using for example git hooks to keep important standards to her executions
-- it should always be executed inside their on code structure and not rely on any project code except configuration and data entity definitions
-- it should have tools to prepare test environments before the test executions
+- it should always be executed inside their on code structure and not rely on any project code except configuration and data Entity Definitions
+- it should supply tools to prepare test environments before the test executions
 
 ### Data Entity Definition
 
-This is a concept dedicated to solve the problem of sharing execution information between the ETL project and the ETL Test Framework. Beyond the project configurations, to build a shared library of tests the ETL Test Framework needs information about the entities that should be used during the test execution. Information such as tables where information should be fetched, fields that we need to consider for test purposes, connection names that should be used to obtain information, or files that hold the correct information that should be used by ETL Test Framework to compare values.
+This is a concept dedicated to solve the problem of sharing execution information between the ETL project and the ETL Test Framework. Beyond the project configurations, to build a shared library of tests the ETL Test Framework needs information about the entities that should be used during the test execution. Information such as tables where information should be fetched, fields/attributes that we need to consider for specific test purposes, connection names that should be used to obtain data, or files that hold the correct information that should be used by ETL Test Framework to compare values. This information must be supplied to the ETL Test Framework at run time, so their tools could be reused be different projects.
 
-The data entity definition can be the tool to link the ETL code and the ETL Test Framework. A Data Entity Definition is currently a json file with the attributes that are necessary to the table to table compare service. Above is the example for the Entity LegalHold used under the etl-dummy project.
+The data Entity Definition can be the tool to link the ETL code and the ETL Test Framework. A Data Entity Definition is currently a json file with the attributes that are necessary to the test tools available. Below is an example for the Entity _LegalHold_ used under the etl-dummy project.
 
 ``` json
 {
@@ -66,21 +101,112 @@ The data entity definition can be the tool to link the ETL code and the ETL Test
     "tableToCompare": "legalhold_correct",
     "fieldsToCompare": "LegalHold,Flag",
     "fieldsToOrderBy": "LegalHold",
-    "produces-output-files": "Y",
-    "test-information":{
+    "producesOutputFiles": "Y",
+    "testInformation":{
         "prepare-environment-destructive": "Y",
         "outputfile-extension-to-delete": "csv"
     }
 }
 ```
 
+The attributes specify the elements that are requested by the ETF.
+
+- connections, represent the connection names that can should be used by ETF when using steps that need this info
+- primaryKey, to refer the Entity primary key
+- mainTable, is the sql table receiving the Entity data
+- tableToCompare, is the sql table that keeps the correct data that can be used to compare results
+- fieldsToCompare, can keep the attributes that we want to compare when testing stuff
+- fieldsToOrderBy, the Entity fields that should be considered to help obtain results that are comparable
+- testInformation - general information about the test that, for instance, help to prepare environment
+
+The ETL Test Framework is expecting this files to be inside each of the ETL projects folder that are currently controlled by the Project, under a speficic folder called _entities_, and then divided by the Entities names. Under the _etl-dummy_ project the _LegalHold_ Entity is at:
+
+``` txt
+etl-dummy/
+├── entities
+│   └── LegalHold
+│       └── definition.json
+```
+
+The path to the _entities_ folder for each project is controlled by the property ENTITES_HOME, defined under each _project_,properties.
+
 ### Folder Structure
 
+The ETL Test Framework has the following folder structure:
+
+```txt
+etl-test-framework/
+├── bin
+├── compare
+├── execution
+├── external-resources
+├── helpers
+└── utilities
+```
+
+- _bin_ - is the folder that should hold all the ETF necessary shell scripts
+- _compare_ - this folder is responsible to keep all the content that performs tests based on comparisons, such as table-to-table comparison. Different test operations should have different parent folders
+- _execution_ - here we put every element that make ETF executions. ETF executions are centralized on entry points to increase control
+- _external-resources_ - here are collected all the external resources that are used/controlled by ETF, such as Jmeter Test Plans
+- _helpers_ - all the small reusable tasks available to each Test Artifact such as load test environments, or compile results
+- _utilities_ - ETF artifacts that are useful to execute outside the regular ETF execution path.
+
+### How ETF works
+
+The ETL Test Framework was built around the idea of execution entry points to be called by the outside world (kitchen or Jmeter Test Configurations). These execution entry points represent the way to execute operations provided by the ETF such as prepare environment for tests, or perform comparisons to determine if the produced data is correct. This way we can control the test execution environment and also standardize the way all test artifacts work and use parameters.
+
+The ETF provides the following execution entry points:
+
+- ../execution/jb-execute-test.kjb - responsible by all the executions related with data quality tests
+- ../utilities/jb-prepare-test-environment.kjb - an utility to create/prepare environments (truncate tables, remove files, etc). Still a work in progess, even more than the other ones.
+
+#### jb-execute-test
+
+This is the main executor. All tests should be started calling this job. His executions are divided into 3 main stages:
+
+1. collect the necessary information to run the test artifact (variables and parameters)
+1. call the test artifact that will be executed
+1. digest the data retrieved by the test artifact
+
+An ETF test execution is always a call to this job with the set of parameters defining the test we wanto to execute. The parameters are:
+
+- P_PROJECT_NAME - the ETL project that controls the Entity to be tested, under our example it should be _etl-dummy_
+- P_ENTITY - the Entity that will be tested, on _etl-dummy_ it is Entity _LegalHold_; this is the Entity that will provide the Data Entity Definition
+- P_TEST_OPERATION - the name of the test operation we would like to perform; currently ETF only as _compare_
+- P_TEST_ELEMENT - the test we would like to execute under the Test Operation previously defined
+- P_FILTER_DATA - if necessary, a way to filter the data that should be considered to the final comparison
+- P_EXPECTED_VALUE - if necessary, a value that will be used as a reference during test comparison
+
+The first stage set the necessary parameters and variables necessary to the execution. Some of those come from the Data Entity Definitions that is appointed by the P_ENTITY value. This .json files are located under the ETL project, so during this stage we have to load the _project-name_.properties file that is responsible to maintain the project properties.
+
+Calling the test artifact, or the Test Element under the selected test operation, is made through the usage of some of those parameters on a job entry:
+
+``` txt
+${ETL_TEST_FRAMEWORK_DIR}/${P_TEST_OPERATION}/jb-executor-${P_TEST_ELEMENT}.kjb
+```
+
+This enforces three important things:
+
+- Test Elements are grouped under Test Operations; Test Operation _compare_ as two Test Elements, _table-to-table_ and _count-from-table_
+- all Test Elements must have a job, lcoated under the correspondent Test Operation folder
+- all Test Elements must start with the prefix _jb-executor-_
+
+The last stage, the ETF test digestion, is controlled by two variables:
+
+- V_ERRORS - and integer the amount of errors detected; when different from zero the ETF ends the execution with an error
+- V_ERROR_MSG - a text field with the message explaining the errors
+
+All developed Test Elements should create and instantiate these variables.
+
+#### jb-prepare-test-environment
+
 ToDo.
 
-### Test Artifacts
+### How to Build one Test Artifact
 
 ToDo.
+
+### Artifact List
 
 ## Jmeter Test Plans
 

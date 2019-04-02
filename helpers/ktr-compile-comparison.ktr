@@ -438,8 +438,8 @@
       <note>Purpose - compile comparison from compare tests
 
 Get's data from memory (previous ktrs executions)</note>
-      <xloc>64</xloc>
-      <yloc>48</yloc>
+      <xloc>32</xloc>
+      <yloc>32</yloc>
       <width>356</width>
       <heigth>61</heigth>
       <fontname>Ubuntu</fontname>

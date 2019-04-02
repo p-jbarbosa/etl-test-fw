@@ -9,11 +9,6 @@
     <trans_status>0</trans_status>
     <directory>/</directory>
     <parameters>
-      <parameter>
-        <name>P_ENTITY</name>
-        <default_value>error</default_value>
-        <description/>
-      </parameter>
     </parameters>
     <log>
       <trans-log-table>
@@ -443,9 +438,9 @@
     <notepad>
       <note>Purpose - load entity information into parameters
 
-Parameters
+Variables
 
-* P_ENTITY - the entity to get information from
+* V_ENTITY - the entity to get information from
 
 Create Variables
 
@@ -459,7 +454,7 @@ Create Variables
 * V_ETL_CONNECTION
 * V_TESTS_CONNECTION</note>
       <xloc>16</xloc>
-      <yloc>16</yloc>
+      <yloc>0</yloc>
       <width>349</width>
       <heigth>299</heigth>
       <fontname>Ubuntu</fontname>
@@ -513,7 +508,7 @@ Create Variables
     <defaultPathLeafToNull>Y</defaultPathLeafToNull>
     <rownum_field/>
     <file>
-      <name>${ETL_PROJECT_DIR}/entities/${P_ENTITY}/definition.json</name>
+      <name>${ENTITIES_HOME}/${V_ENTITY}/definition.json</name>
       <filemask/>
       <exclude_filemask/>
       <file_required>N</file_required>
@@ -613,7 +608,7 @@ Create Variables
       </field>
       <field>
         <name>prepare-environment-destructive</name>
-        <path>$.test-information.prepare-environment-destructive</path>
+        <path>$.testInformation.prepare-environment-destructive</path>
         <type>String</type>
         <format/>
         <currency/>
@@ -626,7 +621,7 @@ Create Variables
       </field>
       <field>
         <name>outputfile-extension-to-delete</name>
-        <path>$.test-information.outputfile-extension-to-delete</path>
+        <path>$.testInformation.outputfile-extension-to-delete</path>
         <type>String</type>
         <format/>
         <currency/>

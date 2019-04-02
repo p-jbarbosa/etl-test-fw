@@ -1,32 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job>
-  <name>kjb-execute-test</name>
+  <name>jb-prepare-test-environment</name>
   <description/>
   <extended_description/>
   <job_version/>
   <job_status>0</job_status>
   <directory>/</directory>
   <created_user>-</created_user>
-  <created_date>2019/02/21 16:12:45.873</created_date>
+  <created_date>2019/02/21 18:58:33.860</created_date>
   <modified_user>-</modified_user>
-  <modified_date>2019/02/21 16:12:45.873</modified_date>
+  <modified_date>2019/02/21 18:58:33.860</modified_date>
   <parameters>
     <parameter>
       <name>P_ENTITY</name>
-      <default_value>LegalHold</default_value>
-      <description/>
+      <default_value>error</default_value>
+      <description>The Entity that will be tested.</description>
     </parameter>
     <parameter>
-      <name>P_TEST_ELEMENT</name>
-      <default_value>table-to-table</default_value>
-      <description/>
-    </parameter>
-    <parameter>
-      <name>P_TEST_OPERATION</name>
-      <default_value>compare</default_value>
-      <description/>
+      <name>P_PROJECT_NAME</name>
+      <default_value/>
+      <description>The project name that controls the Entity we want to test.</description>
     </parameter>
   </parameters>
+  <connection>
+    <name>legalHold</name>
+    <server>${LEGAL_DB_HOST}</server>
+    <type>MYSQL</type>
+    <access>Native</access>
+    <database>${LEGAL_DB_DATABASE_NAME}</database>
+    <port>${LEGAL_DB_PORT_NUMBER}</port>
+    <username>${LEGAL_DB_USERNAME}</username>
+    <password>${LEGAL_DB_PASSWORD}</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>${LEGAL_DB_PORT_NUMBER}</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>STREAM_RESULTS</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
   <slaveservers>
     </slaveservers>
   <job-log-table>
@@ -370,6 +420,46 @@
   <shared_objects_file/>
   <entries>
     <entry>
+      <name>delfile-outputfiles</name>
+      <description/>
+      <type>DELETE_FILES</type>
+      <attributes/>
+      <arg_from_previous>N</arg_from_previous>
+      <include_subfolders>N</include_subfolders>
+      <fields>
+        <field>
+          <name>${ETL_OUTPUT_DIR}/${P_ENTITY}/</name>
+          <filemask>.*\.${V_OUTPUT_EXT_TO_DELETE}$</filemask>
+        </field>
+      </fields>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1168</xloc>
+      <yloc>208</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>truncateTbl-main-table</name>
+      <description/>
+      <type>TRUNCATE_TABLES</type>
+      <attributes/>
+      <connection>legalHold</connection>
+      <arg_from_previous>N</arg_from_previous>
+      <fields>
+        <field>
+          <name>${V_MAIN_TABLE}</name>
+          <schemaname/>
+        </field>
+      </fields>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1392</xloc>
+      <yloc>208</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
       <name>Start</name>
       <description/>
       <type>SPECIAL</type>
@@ -388,20 +478,20 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>48</xloc>
-      <yloc>352</yloc>
+      <yloc>208</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>se-v_errors_no_error</name>
+      <name>se-destructive</name>
       <description/>
       <type>SIMPLE_EVAL</type>
       <attributes/>
       <valuetype>variable</valuetype>
-      <fieldname>${V_ERRORS}</fieldname>
-      <variablename>${V_ERRORS}</variablename>
-      <fieldtype>number</fieldtype>
+      <fieldname/>
+      <variablename>${V_PREPARE_ENVIRONMENT_DESTRUCTIVE}</variablename>
+      <fieldtype>string</fieldtype>
       <mask/>
-      <comparevalue>0</comparevalue>
+      <comparevalue>Y</comparevalue>
       <minvalue/>
       <maxvalue/>
       <successcondition>equal</successcondition>
@@ -411,21 +501,25 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1152</xloc>
-      <yloc>352</yloc>
+      <xloc>1008</xloc>
+      <yloc>208</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>abort-errors-after-test-execution</name>
+      <name>wtl-starting_no_destructive_test</name>
       <description/>
-      <type>ABORT</type>
+      <type>WRITE_TO_LOG</type>
       <attributes/>
-      <message>*** ERROR - ${V_ERROR_MSG} ***</message>
+      <logmessage>*** INFO ***
+
+P_DESTRUCTIVE_TEST - ${P_DESTRUCTIVE_TEST}</logmessage>
+      <loglevel>Minimal</loglevel>
+      <logsubject/>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1296</xloc>
-      <yloc>448</yloc>
+      <xloc>1008</xloc>
+      <yloc>432</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -436,26 +530,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1312</xloc>
-      <yloc>288</yloc>
-      <attributes_kjc/>
-    </entry>
-    <entry>
-      <name>wtl-control_over_errors</name>
-      <description/>
-      <type>WRITE_TO_LOG</type>
-      <attributes/>
-      <logmessage>*** INFO ***
-
-V_ERRORS: ${V_ERRORS}
-V_ERROR_MSG: ${V_ERROR_MSG}</logmessage>
-      <loglevel>Minimal</loglevel>
-      <logsubject/>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>912</xloc>
-      <yloc>352</yloc>
+      <xloc>1392</xloc>
+      <yloc>432</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -488,30 +564,12 @@ V_ERROR_MSG: ${V_ERROR_MSG}</logmessage>
       <run_configuration>Pentaho local</run_configuration>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
-        <parameter>
-          <name>P_ENTITY</name>
-          <stream_name/>
-          <value>${P_ENTITY}</value>
-        </parameter>
       </parameters>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>192</xloc>
-      <yloc>352</yloc>
-      <attributes_kjc/>
-    </entry>
-    <entry>
-      <name>abort-error-getting-entity-data</name>
-      <description/>
-      <type>ABORT</type>
-      <attributes/>
-      <message>*** ERROR: could not get entity data ***</message>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>192</xloc>
-      <yloc>512</yloc>
+      <xloc>624</xloc>
+      <yloc>208</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -522,25 +580,24 @@ V_ERROR_MSG: ${V_ERROR_MSG}</logmessage>
       <logmessage>V_PRIMARY_KEY - ${V_PRIMARY_KEY}
 V_MAIN_TABLE - ${V_MAIN_TABLE}
 V_TABLE_TO_COMPARE - ${V_TABLE_TO_COMPARE}
-V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}
-V_FIELDS_TO_ORDER_BY- ${V_FIELDS_TO_ORDER_BY}</logmessage>
+V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
       <loglevel>Minimal</loglevel>
       <logsubject>*** INFO: ENTITY DATA ***</logsubject>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>368</xloc>
-      <yloc>352</yloc>
+      <xloc>864</xloc>
+      <yloc>208</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>kjb-executor_$P_TEST_ELEMENT</name>
+      <name>jb-load-test-environment</name>
       <description/>
       <type>JOB</type>
       <attributes/>
       <specification_method>filename</specification_method>
       <job_object_id/>
-      <filename>${ETL_TEST_FRAMEWORK_DIR}/${P_TEST_OPERATION}/kjb-executor-${P_TEST_ELEMENT}.kjb</filename>
+      <filename>${ETL_TEST_FRAMEWORK_DIR}/helpers/jb-load-test-environment.kjb</filename>
       <jobname/>
       <directory/>
       <arg_from_previous>N</arg_from_previous>
@@ -561,20 +618,61 @@ V_FIELDS_TO_ORDER_BY- ${V_FIELDS_TO_ORDER_BY}</logmessage>
       <run_configuration>Pentaho local</run_configuration>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
+        <parameter>
+          <name>P_PROJECT_NAME</name>
+          <stream_name/>
+          <value>${P_PROJECT_NAME}</value>
+        </parameter>
+        <parameter>
+          <name>P_ENTITY</name>
+          <stream_name/>
+          <value>${P_ENTITY}</value>
+        </parameter>
       </parameters>
       <set_append_logfile>N</set_append_logfile>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>656</xloc>
+      <xloc>336</xloc>
+      <yloc>208</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>abort-error-loading-environment</name>
+      <description/>
+      <type>ABORT</type>
+      <attributes/>
+      <message>*** ERROR: could not load environment ***</message>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>336</xloc>
       <yloc>352</yloc>
       <attributes_kjc/>
     </entry>
   </entries>
   <hops>
     <hop>
-      <from>se-v_errors_no_error</from>
-      <to>abort-errors-after-test-execution</to>
+      <from>delfile-outputfiles</from>
+      <to>truncateTbl-main-table</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>se-destructive</from>
+      <to>delfile-outputfiles</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>se-destructive</from>
+      <to>wtl-starting_no_destructive_test</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -582,7 +680,7 @@ V_FIELDS_TO_ORDER_BY- ${V_FIELDS_TO_ORDER_BY}</logmessage>
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>se-v_errors_no_error</from>
+      <from>truncateTbl-main-table</from>
       <to>Success</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
@@ -591,30 +689,12 @@ V_FIELDS_TO_ORDER_BY- ${V_FIELDS_TO_ORDER_BY}</logmessage>
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>wtl-control_over_errors</from>
-      <to>se-v_errors_no_error</to>
+      <from>wtl-starting_no_destructive_test</from>
+      <to>Success</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>Start</from>
-      <to>ktr-get-entity-data</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>Y</unconditional>
-    </hop>
-    <hop>
-      <from>ktr-get-entity-data</from>
-      <to>abort-error-getting-entity-data</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>N</evaluation>
       <unconditional>N</unconditional>
     </hop>
     <hop>
@@ -628,7 +708,7 @@ V_FIELDS_TO_ORDER_BY- ${V_FIELDS_TO_ORDER_BY}</logmessage>
     </hop>
     <hop>
       <from>wtl-entity-data</from>
-      <to>kjb-executor_$P_TEST_ELEMENT</to>
+      <to>se-destructive</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -636,8 +716,26 @@ V_FIELDS_TO_ORDER_BY- ${V_FIELDS_TO_ORDER_BY}</logmessage>
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>kjb-executor_$P_TEST_ELEMENT</from>
-      <to>wtl-control_over_errors</to>
+      <from>Start</from>
+      <to>jb-load-test-environment</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>jb-load-test-environment</from>
+      <to>abort-error-loading-environment</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>jb-load-test-environment</from>
+      <to>ktr-get-entity-data</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -647,18 +745,17 @@ V_FIELDS_TO_ORDER_BY- ${V_FIELDS_TO_ORDER_BY}</logmessage>
   </hops>
   <notepads>
     <notepad>
-      <note>Purpose - triggered the tests
+      <note>Purpose - prepare test environment
+
+Use Case - to be used when a specific enviroment preparation is need
 
 Parameters:
-
-* P_ENTITY - the entity that will be tested
-* P_TEST_OPERATION - compare
-* P_TEST_ELEMENT - table-to-table
-* P_TEST_ELEMENT_TYPE - ktr</note>
-      <xloc>32</xloc>
+* P_PROJECT_NAME - the project that tracks the testing Entity
+* P_ENTITY - the preparation scope object </note>
+      <xloc>16</xloc>
       <yloc>16</yloc>
-      <width>287</width>
-      <heigth>146</heigth>
+      <width>477</width>
+      <heigth>129</heigth>
       <fontname>Ubuntu</fontname>
       <fontsize>11</fontsize>
       <fontbold>N</fontbold>
@@ -669,95 +766,6 @@ Parameters:
       <backgroundcolorred>255</backgroundcolorred>
       <backgroundcolorgreen>205</backgroundcolorgreen>
       <backgroundcolorblue>112</backgroundcolorblue>
-      <bordercolorred>100</bordercolorred>
-      <bordercolorgreen>100</bordercolorgreen>
-      <bordercolorblue>100</bordercolorblue>
-      <drawshadow>Y</drawshadow>
-    </notepad>
-    <notepad>
-      <note>Variables initiated
-
-* V_PRIMARY_KEY
-* V_MAIN_TABLE
-* V_TABLE_TO_COMPARE
-* V_FIELDS_TO_COMPARE
-
-
-
-
-</note>
-      <xloc>128</xloc>
-      <yloc>224</yloc>
-      <width>189</width>
-      <heigth>197</heigth>
-      <fontname>Ubuntu</fontname>
-      <fontsize>11</fontsize>
-      <fontbold>N</fontbold>
-      <fontitalic>N</fontitalic>
-      <fontcolorred>0</fontcolorred>
-      <fontcolorgreen>0</fontcolorgreen>
-      <fontcolorblue>0</fontcolorblue>
-      <backgroundcolorred>173</backgroundcolorred>
-      <backgroundcolorgreen>216</backgroundcolorgreen>
-      <backgroundcolorblue>230</backgroundcolorblue>
-      <bordercolorred>100</bordercolorred>
-      <bordercolorgreen>100</bordercolorgreen>
-      <bordercolorblue>100</bordercolorblue>
-      <drawshadow>Y</drawshadow>
-    </notepad>
-    <notepad>
-      <note>Validates error variable 
-to make final decision
-
-</note>
-      <xloc>1072</xloc>
-      <yloc>288</yloc>
-      <width>173</width>
-      <heigth>78</heigth>
-      <fontname>Ubuntu</fontname>
-      <fontsize>11</fontsize>
-      <fontbold>N</fontbold>
-      <fontitalic>N</fontitalic>
-      <fontcolorred>0</fontcolorred>
-      <fontcolorgreen>0</fontcolorgreen>
-      <fontcolorblue>0</fontcolorblue>
-      <backgroundcolorred>173</backgroundcolorred>
-      <backgroundcolorgreen>216</backgroundcolorgreen>
-      <backgroundcolorblue>230</backgroundcolorblue>
-      <bordercolorred>100</bordercolorred>
-      <bordercolorgreen>100</bordercolorgreen>
-      <bordercolorblue>100</bordercolorblue>
-      <drawshadow>Y</drawshadow>
-    </notepad>
-    <notepad>
-      <note>Could be similar to what is designed 
-on the ETL framework.
-
-A Generic Executor that also creates 
-environment and is responsible
-to put the logs on the correct place.
-
-                                                                                               
-
-
-
-
-
-</note>
-      <xloc>528</xloc>
-      <yloc>208</yloc>
-      <width>295</width>
-      <heigth>248</heigth>
-      <fontname>Ubuntu</fontname>
-      <fontsize>11</fontsize>
-      <fontbold>N</fontbold>
-      <fontitalic>N</fontitalic>
-      <fontcolorred>0</fontcolorred>
-      <fontcolorgreen>0</fontcolorgreen>
-      <fontcolorblue>0</fontcolorblue>
-      <backgroundcolorred>237</backgroundcolorred>
-      <backgroundcolorgreen>211</backgroundcolorgreen>
-      <backgroundcolorblue>164</backgroundcolorblue>
       <bordercolorred>100</bordercolorred>
       <bordercolorgreen>100</bordercolorgreen>
       <bordercolorblue>100</bordercolorblue>

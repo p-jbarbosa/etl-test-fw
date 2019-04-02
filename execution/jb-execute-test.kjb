@@ -1,17 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job>
-  <name>kjb-executor-table-to-table</name>
+  <name>jb-execute-test</name>
   <description/>
   <extended_description/>
   <job_version/>
   <job_status>0</job_status>
   <directory>/</directory>
   <created_user>-</created_user>
-  <created_date>2019/02/26 11:30:28.357</created_date>
+  <created_date>2019/02/21 16:12:45.873</created_date>
   <modified_user>-</modified_user>
-  <modified_date>2019/02/26 11:30:28.357</modified_date>
+  <modified_date>2019/02/21 16:12:45.873</modified_date>
   <parameters>
-    </parameters>
+    <parameter>
+      <name>P_ENTITY</name>
+      <default_value/>
+      <description>The Entity to be tested from the Project</description>
+    </parameter>
+    <parameter>
+      <name>P_EXPECTED_VALUE</name>
+      <default_value/>
+      <description>To test pass expected values</description>
+    </parameter>
+    <parameter>
+      <name>P_FILTER_DATA</name>
+      <default_value/>
+      <description>Elements that help to filter testing data</description>
+    </parameter>
+    <parameter>
+      <name>P_PROJECT_NAME</name>
+      <default_value>etl-dummy</default_value>
+      <description>The project that holds the Entity to be tested</description>
+    </parameter>
+    <parameter>
+      <name>P_TEST_ELEMENT</name>
+      <default_value>count-from-table</default_value>
+      <description>The type of test from test operation that will be performed</description>
+    </parameter>
+    <parameter>
+      <name>P_TEST_OPERATION</name>
+      <default_value>compare</default_value>
+      <description>The test operation that would be performed</description>
+    </parameter>
+  </parameters>
   <slaveservers>
     </slaveservers>
   <job-log-table>
@@ -372,117 +402,45 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>96</xloc>
-      <yloc>176</yloc>
+      <xloc>48</xloc>
+      <yloc>400</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>wtl-entity-data</name>
+      <name>se-v_errors_no_error</name>
       <description/>
-      <type>WRITE_TO_LOG</type>
+      <type>SIMPLE_EVAL</type>
       <attributes/>
-      <logmessage>V_PRIMARY_KEY - ${V_PRIMARY_KEY}
-V_MAIN_TABLE - ${V_MAIN_TABLE}
-V_TABLE_TO_COMPARE - ${V_TABLE_TO_COMPARE}
-V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
-      <loglevel>Minimal</loglevel>
-      <logsubject>*** INFO: COMPARE TABLE TO TABLE EXECUTOR ***</logsubject>
+      <valuetype>variable</valuetype>
+      <fieldname>${V_ERRORS}</fieldname>
+      <variablename>${V_ERRORS}</variablename>
+      <fieldtype>number</fieldtype>
+      <mask/>
+      <comparevalue>0</comparevalue>
+      <minvalue/>
+      <maxvalue/>
+      <successcondition>equal</successcondition>
+      <successnumbercondition>equal</successnumbercondition>
+      <successbooleancondition>false</successbooleancondition>
+      <successwhenvarset>N</successwhenvarset>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>256</xloc>
-      <yloc>176</yloc>
+      <xloc>1424</xloc>
+      <yloc>560</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>ktr-mdi-template-table-to-table</name>
+      <name>abort-errors-after-test-execution</name>
       <description/>
-      <type>TRANS</type>
+      <type>ABORT</type>
       <attributes/>
-      <specification_method>filename</specification_method>
-      <trans_object_id/>
-      <filename>${ETL_TEST_FRAMEWORK_DIR}/${P_TEST_OPERATION}/tools/ktr-mdi-apply-table-to-table.ktr</filename>
-      <transname/>
-      <arg_from_previous>N</arg_from_previous>
-      <params_from_previous>N</params_from_previous>
-      <exec_per_row>N</exec_per_row>
-      <clear_rows>N</clear_rows>
-      <clear_files>N</clear_files>
-      <set_logfile>N</set_logfile>
-      <logfile/>
-      <logext/>
-      <add_date>N</add_date>
-      <add_time>N</add_time>
-      <loglevel>Basic</loglevel>
-      <cluster>N</cluster>
-      <slave_server_name/>
-      <set_append_logfile>N</set_append_logfile>
-      <wait_until_finished>Y</wait_until_finished>
-      <follow_abort_remote>N</follow_abort_remote>
-      <create_parent_folder>N</create_parent_folder>
-      <logging_remote_work>N</logging_remote_work>
-      <run_configuration>Pentaho local</run_configuration>
-      <parameters>
-        <pass_all_parameters>Y</pass_all_parameters>
-        <parameter>
-          <name>V_FIELDS_TO_COMPARE</name>
-          <stream_name/>
-          <value>${V_FIELDS_TO_COMPARE}</value>
-        </parameter>
-        <parameter>
-          <name>V_MAIN_TABLE</name>
-          <stream_name/>
-          <value>${V_MAIN_TABLE}</value>
-        </parameter>
-        <parameter>
-          <name>V_TABLE_TO_COMPARE</name>
-          <stream_name/>
-          <value>${V_TABLE_TO_COMPARE}</value>
-        </parameter>
-      </parameters>
+      <message>*** ERROR - ${V_ERROR_MSG} ***</message>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>480</xloc>
-      <yloc>176</yloc>
-      <attributes_kjc/>
-    </entry>
-    <entry>
-      <name>ktr-compile-comparison</name>
-      <description/>
-      <type>TRANS</type>
-      <attributes/>
-      <specification_method>filename</specification_method>
-      <trans_object_id/>
-      <filename>${ETL_TEST_FRAMEWORK_DIR}/helpers/ktr-compile-comparison.ktr</filename>
-      <transname/>
-      <arg_from_previous>N</arg_from_previous>
-      <params_from_previous>N</params_from_previous>
-      <exec_per_row>N</exec_per_row>
-      <clear_rows>N</clear_rows>
-      <clear_files>N</clear_files>
-      <set_logfile>N</set_logfile>
-      <logfile/>
-      <logext/>
-      <add_date>N</add_date>
-      <add_time>N</add_time>
-      <loglevel>Basic</loglevel>
-      <cluster>N</cluster>
-      <slave_server_name/>
-      <set_append_logfile>N</set_append_logfile>
-      <wait_until_finished>Y</wait_until_finished>
-      <follow_abort_remote>N</follow_abort_remote>
-      <create_parent_folder>N</create_parent_folder>
-      <logging_remote_work>N</logging_remote_work>
-      <run_configuration>Pentaho local</run_configuration>
-      <parameters>
-        <pass_all_parameters>Y</pass_all_parameters>
-      </parameters>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>720</xloc>
-      <yloc>176</yloc>
+      <xloc>1344</xloc>
+      <yloc>688</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -493,15 +451,273 @@ V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>992</xloc>
-      <yloc>176</yloc>
+      <xloc>1504</xloc>
+      <yloc>688</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>wtl-control_over_errors</name>
+      <description/>
+      <type>WRITE_TO_LOG</type>
+      <attributes/>
+      <logmessage>*** INFO ***
+
+V_ERRORS: ${V_ERRORS}
+V_ERROR_MSG: ${V_ERROR_MSG}</logmessage>
+      <loglevel>Minimal</loglevel>
+      <logsubject/>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1424</xloc>
+      <yloc>400</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>ktr-get-entity-data</name>
+      <description/>
+      <type>TRANS</type>
+      <attributes/>
+      <specification_method>filename</specification_method>
+      <trans_object_id/>
+      <filename>${ETL_TEST_FRAMEWORK_DIR}/helpers/ktr-get-entity-data.ktr</filename>
+      <transname/>
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name/>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <logging_remote_work>N</logging_remote_work>
+      <run_configuration>Pentaho local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>752</xloc>
+      <yloc>400</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>abort-error-getting-entity-data</name>
+      <description/>
+      <type>ABORT</type>
+      <attributes/>
+      <message>*** ERROR: could not get entity data ***</message>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>752</xloc>
+      <yloc>560</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>wtl-entity-data</name>
+      <description/>
+      <type>WRITE_TO_LOG</type>
+      <attributes/>
+      <logmessage>V_PRIMARY_KEY - ${V_PRIMARY_KEY}
+V_MAIN_TABLE - ${V_MAIN_TABLE}
+V_TABLE_TO_COMPARE - ${V_TABLE_TO_COMPARE}
+V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}
+V_FIELDS_TO_ORDER_BY- ${V_FIELDS_TO_ORDER_BY}</logmessage>
+      <loglevel>Minimal</loglevel>
+      <logsubject>*** INFO: ENTITY DATA ***</logsubject>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>944</xloc>
+      <yloc>400</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>kjb-executor_$P_TEST_ELEMENT</name>
+      <description/>
+      <type>JOB</type>
+      <attributes/>
+      <specification_method>filename</specification_method>
+      <job_object_id/>
+      <filename>${ETL_TEST_FRAMEWORK_DIR}/${P_TEST_OPERATION}/jb-executor-${P_TEST_ELEMENT}.kjb</filename>
+      <jobname/>
+      <directory/>
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Nothing</loglevel>
+      <slave_server_name/>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <expand_remote_job>N</expand_remote_job>
+      <create_parent_folder>N</create_parent_folder>
+      <pass_export>N</pass_export>
+      <run_configuration>Pentaho local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <set_append_logfile>N</set_append_logfile>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>1152</xloc>
+      <yloc>400</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>jb-load-test-environment</name>
+      <description/>
+      <type>JOB</type>
+      <attributes/>
+      <specification_method>filename</specification_method>
+      <job_object_id/>
+      <filename>${ETL_TEST_FRAMEWORK_DIR}/helpers/jb-load-test-environment.kjb</filename>
+      <jobname/>
+      <directory/>
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Nothing</loglevel>
+      <slave_server_name/>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <expand_remote_job>N</expand_remote_job>
+      <create_parent_folder>N</create_parent_folder>
+      <pass_export>N</pass_export>
+      <run_configuration>Pentaho local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+        <parameter>
+          <name>P_PROJECT_NAME</name>
+          <stream_name/>
+          <value>${P_PROJECT_NAME}</value>
+        </parameter>
+        <parameter>
+          <name>P_ENTITY</name>
+          <stream_name/>
+          <value>${P_ENTITY}</value>
+        </parameter>
+        <parameter>
+          <name>P_FILTER_DATA</name>
+          <stream_name/>
+          <value>${P_FILTER_DATA}</value>
+        </parameter>
+        <parameter>
+          <name>P_EXPECTED_VALUE</name>
+          <stream_name/>
+          <value>${P_EXPECTED_VALUE}</value>
+        </parameter>
+      </parameters>
+      <set_append_logfile>N</set_append_logfile>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>336</xloc>
+      <yloc>400</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>abort-error-loading-environment</name>
+      <description/>
+      <type>ABORT</type>
+      <attributes/>
+      <message>*** ERROR: could not load environment ***</message>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>336</xloc>
+      <yloc>560</yloc>
       <attributes_kjc/>
     </entry>
   </entries>
   <hops>
     <hop>
-      <from>Start</from>
+      <from>se-v_errors_no_error</from>
+      <to>abort-errors-after-test-execution</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>se-v_errors_no_error</from>
+      <to>Success</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>wtl-control_over_errors</from>
+      <to>se-v_errors_no_error</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>ktr-get-entity-data</from>
+      <to>abort-error-getting-entity-data</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>ktr-get-entity-data</from>
       <to>wtl-entity-data</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>wtl-entity-data</from>
+      <to>kjb-executor_$P_TEST_ELEMENT</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>kjb-executor_$P_TEST_ELEMENT</from>
+      <to>wtl-control_over_errors</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Start</from>
+      <to>jb-load-test-environment</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -509,26 +725,17 @@ V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>wtl-entity-data</from>
-      <to>ktr-mdi-template-table-to-table</to>
+      <from>jb-load-test-environment</from>
+      <to>abort-error-loading-environment</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
+      <evaluation>N</evaluation>
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>ktr-mdi-template-table-to-table</from>
-      <to>ktr-compile-comparison</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>ktr-compile-comparison</from>
-      <to>Success</to>
+      <from>jb-load-test-environment</from>
+      <to>ktr-get-entity-data</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -538,11 +745,25 @@ V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
   </hops>
   <notepads>
     <notepad>
-      <note>Purpose - compare table to table and prepare results</note>
+      <note>Purpose - triggered the tests
+
+Parameters:
+
+* P_PROJECT_NAME - the project that controls the Entity to be tested
+* P_ENTITY - the Entity that will be tested
+* P_TEST_OPERATION - compare
+* P_TEST_ELEMENT - table-to-table
+* P_FILTER_DATA - the way the test should filter data
+* P_EXPECTED_VALUE - to pass expected values to the test artifacts
+
+Expected Variables:
+
+* V_ERRORS
+* V_ERROR_MSG</note>
       <xloc>16</xloc>
-      <yloc>32</yloc>
-      <width>367</width>
-      <heigth>27</heigth>
+      <yloc>16</yloc>
+      <width>482</width>
+      <heigth>265</heigth>
       <fontname>Ubuntu</fontname>
       <fontsize>11</fontsize>
       <fontbold>N</fontbold>
@@ -553,6 +774,104 @@ V_FIELDS_TO_COMPARE - ${V_FIELDS_TO_COMPARE}</logmessage>
       <backgroundcolorred>255</backgroundcolorred>
       <backgroundcolorgreen>205</backgroundcolorgreen>
       <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
+    <notepad>
+      <note>Variables initiated
+
+* V_PRIMARY_KEY
+* V_MAIN_TABLE
+* V_TABLE_TO_COMPARE
+* V_FIELDS_TO_COMPARE
+* V_FIELDS_TO_ORDER_BY
+* V_PREPARE_ENVIRONMENT_DESTRUCTIVE
+* V_OUTPUT_EXT_TO_DELETE
+* V_ETL_CONNECTION
+* V_TESTS_CONNECTION
+
+
+
+
+</note>
+      <xloc>592</xloc>
+      <yloc>192</yloc>
+      <width>316</width>
+      <heigth>282</heigth>
+      <fontname>Ubuntu</fontname>
+      <fontsize>11</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>173</backgroundcolorred>
+      <backgroundcolorgreen>216</backgroundcolorgreen>
+      <backgroundcolorblue>230</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
+    <notepad>
+      <note>Validates error variable 
+to make final decision
+
+
+
+
+
+</note>
+      <xloc>1360</xloc>
+      <yloc>496</yloc>
+      <width>173</width>
+      <heigth>146</heigth>
+      <fontname>Ubuntu</fontname>
+      <fontsize>11</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>173</backgroundcolorred>
+      <backgroundcolorgreen>216</backgroundcolorgreen>
+      <backgroundcolorblue>230</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
+    <notepad>
+      <note>Could be similar to what is designed 
+on the ETL framework.
+
+A Generic Executor that also creates 
+environment and is responsible
+to put the logs on the correct place.
+
+                                                                                               
+
+
+
+
+
+</note>
+      <xloc>1024</xloc>
+      <yloc>240</yloc>
+      <width>295</width>
+      <heigth>248</heigth>
+      <fontname>Ubuntu</fontname>
+      <fontsize>11</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>237</backgroundcolorred>
+      <backgroundcolorgreen>211</backgroundcolorgreen>
+      <backgroundcolorblue>164</backgroundcolorblue>
       <bordercolorred>100</bordercolorred>
       <bordercolorgreen>100</bordercolorgreen>
       <bordercolorblue>100</bordercolorblue>
